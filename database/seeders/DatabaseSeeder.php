@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'kenneth@email.com',
         ]);
         \App\Models\Employee::factory(10)->create();
+        \App\Models\ItemCategory::factory(10)->create();
         // $this->call([
         //     ExpenseTypeSeeder::class
         // ]);
