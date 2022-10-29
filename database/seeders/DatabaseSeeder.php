@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Employee::factory(10)->create();
         \App\Models\ItemCategory::factory(10)->create();
+        \App\Models\Location::factory(10)->create();
 
         $this->call([
             ItemStatusSeeder::class

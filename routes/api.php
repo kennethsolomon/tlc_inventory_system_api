@@ -32,3 +32,9 @@ Route::get("item_status", [\App\Http\Controllers\ItemStatusController::class, 'i
 Route::get("item_status/{item_status}", [\App\Http\Controllers\ItemStatusController::class, 'show']);
 Route::post("update_or_create_item_status", [\App\Http\Controllers\ItemStatusController::class, 'updateOrCreateItemStatus']);
 Route::delete("delete_item_status/{item_status}", [\App\Http\Controllers\ItemStatusController::class, 'destroy']);
+
+// Location
+Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
+Route::get("location/{location}", [\App\Http\Controllers\LocationController::class, 'show']);
+Route::post("update_or_create_location", [\App\Http\Controllers\LocationController::class, 'updateOrCreateLocation']);
+Route::delete("delete_location/{location}", [\App\Http\Controllers\LocationController::class, 'destroy']);
