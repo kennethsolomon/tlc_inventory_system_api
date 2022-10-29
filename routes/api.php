@@ -25,3 +25,10 @@ Route::get("item_categories", [\App\Http\Controllers\ItemCategoryController::cla
 Route::get("item_category/{item_category}", [\App\Http\Controllers\ItemCategoryController::class, 'show']);
 Route::post("update_or_create_item_category", [\App\Http\Controllers\ItemCategoryController::class, 'updateOrCreateItemCategory']);
 Route::delete("delete_item_category/{item_category}", [\App\Http\Controllers\ItemCategoryController::class, 'destroy']);
+
+
+// Item Status
+Route::get("item_status", [\App\Http\Controllers\ItemStatusController::class, 'index']);
+Route::get("item_status/{item_status}", [\App\Http\Controllers\ItemStatusController::class, 'show']);
+Route::post("update_or_create_item_status", [\App\Http\Controllers\ItemStatusController::class, 'updateOrCreateItemStatus']);
+Route::delete("delete_item_status/{item_status}", [\App\Http\Controllers\ItemStatusController::class, 'destroy']);

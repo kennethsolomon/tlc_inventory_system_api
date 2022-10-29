@@ -20,8 +20,10 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Employee::factory(10)->create();
         \App\Models\ItemCategory::factory(10)->create();
-        // $this->call([
-        //     ExpenseTypeSeeder::class
-        // ]);
+
+        $this->call([
+            ItemStatusSeeder::class
+            // ExpenseTypeSeeder::class
+        ]);
     }
 }
