@@ -61,7 +61,7 @@ class ItemCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ItemCategory  $employee
+     * @param  \App\Models\ItemCategory  $item_status
      * @return \Illuminate\Http\Response
      */
     public function destroy(ItemCategory $item_category)
