@@ -25,7 +25,6 @@ class EmployeePostRequest extends FormRequest
     {
         return [
             'fname' => 'required|string',
-            'mname' => 'required|string',
             'lname' => 'required|string',
             'office' => 'required|string',
         ];
