@@ -13,3 +13,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 Route::post("login", [\App\Http\Controllers\AuthController::class, 'login']);
+
+// Employee
+Route::get("employees", [\App\Http\Controllers\EmployeeController::class, 'index']);
+Route::get("employee/{employee}", [\App\Http\Controllers\EmployeeController::class, 'show']);
+Route::post("update_or_create_employee", [\App\Http\Controllers\EmployeeController::class, 'updateOrCreateEmployee']);
+Route::delete("delete_employee/{employee}", [\App\Http\Controllers\EmployeeController::class, 'destroy']);

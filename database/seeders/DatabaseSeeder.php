@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'email' => 'kenneth@email.com',
         ]);
-
+        \App\Models\Employee::factory(10)->create();
         // $this->call([
         //     ExpenseTypeSeeder::class
         // ]);
