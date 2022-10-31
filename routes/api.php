@@ -21,6 +21,12 @@ Route::post("update_or_create_employee", [\App\Http\Controllers\EmployeeControll
 Route::delete("delete_employee/{employee}", [\App\Http\Controllers\EmployeeController::class, 'destroy']);
 
 // Item Category
+Route::get("items", [\App\Http\Controllers\ItemController::class, 'index']);
+Route::get("item/{item}", [\App\Http\Controllers\ItemController::class, 'show']);
+Route::post("update_or_create_item", [\App\Http\Controllers\ItemController::class, 'updateOrCreateItem']);
+Route::delete("delete_item/{item}", [\App\Http\Controllers\ItemController::class, 'destroy']);
+
+// Item Category
 Route::get("item_categories", [\App\Http\Controllers\ItemCategoryController::class, 'index']);
 Route::get("item_category/{item_category}", [\App\Http\Controllers\ItemCategoryController::class, 'show']);
 Route::post("update_or_create_item_category", [\App\Http\Controllers\ItemCategoryController::class, 'updateOrCreateItemCategory']);

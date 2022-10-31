@@ -26,5 +26,7 @@ class DatabaseSeeder extends Seeder
             ItemStatusSeeder::class
             // ExpenseTypeSeeder::class
         ]);
+
+        \App\Models\Item::factory(10)->create();
     }
 }
