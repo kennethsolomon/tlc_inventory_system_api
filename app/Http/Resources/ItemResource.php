@@ -35,6 +35,39 @@ class ItemResource extends JsonResource
             'item_status_id' => $this->item_status_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'assigned_person_info' => [
+                'id' => (string)$this->assigned_person_info->id,
+                'fname' => $this->assigned_person_info->fname,
+                'mname' => $this->assigned_person_info->mname,
+                'lname' => $this->assigned_person_info->lname,
+                'office' => $this->assigned_person_info->office,
+            ],
+            'received_by_info' => [
+                'id' => (string)$this->received_by_info->id,
+                'fname' => $this->received_by_info->fname,
+                'mname' => $this->received_by_info->mname,
+                'lname' => $this->received_by_info->lname,
+                'office' => $this->received_by_info->office,
+            ],
+            'received_from_info' => [
+                'id' => (string)$this->received_from_info->id,
+                'fname' => $this->received_from_info->fname,
+                'mname' => $this->received_from_info->mname,
+                'lname' => $this->received_from_info->lname,
+                'office' => $this->received_from_info->office,
+            ],
+            'item_category_info' => [
+                'id' => (string)$this->item_category_info->id,
+                'name' => $this->item_category_info->name,
+            ],
+            'item_status_info' => [
+                'id' => (string)$this->item_status_info->id,
+                'name' => $this->item_status_info->name,
+            ],
+            'location_info' => [
+                'id' => (string)$this->location_info->id,
+                'name' => $this->location_info->name,
+            ],
         ];
     }
 }

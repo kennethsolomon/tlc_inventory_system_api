@@ -14,4 +14,10 @@ class Employee extends Model
         'lname',
         'office',
     ];
+    protected $appends = ['fullname'];
+
+    public function getFullnameAttribute()
+    {
+        return $this->fname . ' ' . $this->mname . ' ' . $this->lname;
+    }
 }

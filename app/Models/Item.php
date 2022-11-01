@@ -29,7 +29,40 @@ class Item extends Model
         'item_status_id',
     ];
 
+    protected $appends = ['assigned_person_info', 'item_category_info', 'item_status_info', 'location_info'];
 
+    // Appends
+    public function getAssignedPersonInfoAttribute()
+    {
+        return Employee::find($this->assigned_person_id);
+    }
+
+    public function getReceivedFromInfoAttribute()
+    {
+        return Employee::find($this->received_from_id);
+    }
+    public function getReceivedByInfoAttribute()
+    {
+        return Employee::find($this->received_by_id);
+    }
+
+    public function getItemCategoryInfoAttribute()
+    {
+        return ItemCategory::find($this->item_category_id);
+    }
+
+    public function getItemStatusInfoAttribute()
+    {
+        return ItemStatus::find($this->item_status_id);
+    }
+
+    public function getLocationInfoAttribute()
+    {
+        return Location::find($this->location_id);
+    }
+
+
+    // Relationships
     public function location()
     {
         return $this->hasOne(Location::class);
