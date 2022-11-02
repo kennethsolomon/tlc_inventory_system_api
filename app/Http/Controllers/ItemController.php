@@ -73,7 +73,7 @@ class ItemController extends Controller
 
             DB::commit();
 
-            return response(null, Response::HTTP_OK);
+            return response($item, Response::HTTP_OK);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
