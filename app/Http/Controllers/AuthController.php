@@ -2,49 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserPostRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-	function register(Request $request)
-	{
+  public function updateOrCreateUser(UserPostRequest $request)
+  {
+    try {
+      DB::beginTransaction();
 
-		$credentials = $request->only('username', 'password');
+      $fields = $request->validated();
 
-		if (Auth::attempt($credentials)) {
-			$request->session()->regenerate();
+      $user = User::updateOrCreate(
+        ['id' => $request->id],
+        $fields + ['password' => Hash::make($request->password)]
+      );
 
-			return response('Login Success', 200);
-		}
+      DB::commit();
+      return (new UserResource($user))->response()->setStatusCode(201);
+    } catch (\Throwable $th) {
+      throw $th;
+      DB::rollBack();
+      return response(null, Response::HTTP_NOT_IMPLEMENTED);
+    }
+  }
 
-		return response('Unauthorized', 401);
-	}
+  function register(Request $request)
+  {
 
-	function login(Request $request)
-	{
-		$credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-		if (!auth()->attempt($credentials)) {
-			throw ValidationException::withMessages([
-				'email' => 'Invalid credentials'
-			]);
-		}
+    if (Auth::attempt($credentials)) {
+      $request->session()->regenerate();
 
-		$request->session()->regenerate();
+      return response('Login Success', 200);
+    }
 
-		return response()->json(Auth::user(), 201);
-	}
+    return response('Unauthorized', 401);
+  }
 
-	function logout(Request $request)
-	{
-		auth()->guard('web')->logout();
+  function login(Request $request)
+  {
+    $credentials = $request->only('email', 'password');
 
-		$request->session()->invalidate();
+    if (!auth()->attempt($credentials)) {
+      throw ValidationException::withMessages([
+        'email' => 'Invalid credentials'
+      ]);
+    }
 
-		$request->session()->regenerateToken();
+    $request->session()->regenerate();
 
-		return response()->json(null, 200);
-	}
+    return response()->json(Auth::user(), 201);
+  }
+
+  function logout(Request $request)
+  {
+    auth()->guard('web')->logout();
+
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
+
+    return response()->json(null, 200);
+  }
 }
