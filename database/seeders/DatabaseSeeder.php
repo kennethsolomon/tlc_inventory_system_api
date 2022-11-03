@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
     {
 
         \App\Models\User::factory()->create([
-            'email' => 'kenneth@email.com',
+            'email' => 'admin',
             'position' => 'CHED - PTS III',
+            'role' => 'Admin',
         ]);
         \App\Models\Employee::factory(10)->create();
         \App\Models\ItemCategory::factory(10)->create();
