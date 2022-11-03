@@ -25,7 +25,7 @@ class UserPostRequest extends FormRequest
     {
         return [
             'firstname' => 'required|string',
-            'middlename' => 'string',
+            'middlename' => 'nullable',
             'lastname' => 'required|string',
             'position' => 'required|string',
             'email' => 'required|string',
