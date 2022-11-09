@@ -30,14 +30,27 @@ class ItemController extends Controller
     public function updateOrCreateItem(ItemPostRequest $request)
     {
         try {
+
             DB::beginTransaction();
 
-            $fields = $request->validated();
+            if ($request->purchaser == 'Regional Office') {
+                $fields = $request->validated();
 
-            $item = Item::updateOrCreate(
-                ['id' => $request->id],
-                $fields
-            );
+                $item = Item::updateOrCreate(
+                    ['id' => $request->id],
+                    $fields
+                        + ['quantity' => 1]
+                );
+            } else {
+                for ($i = 0; $i < $request->quantity; $i++) {
+                    $fields = $request->validated();
+
+                    $item = Item::updateOrCreate(
+                        ['id' => $request->id],
+                        $fields
+                    );
+                }
+            }
 
             DB::commit();
             return (new ItemResource($item))->response()->setStatusCode(201);
