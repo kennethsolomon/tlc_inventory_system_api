@@ -31,6 +31,30 @@ class Item extends Model
 
     protected $appends = ['assigned_person_info', 'item_category_info', 'item_status_info', 'location_info'];
 
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     $closure = function ($questionnaire) {
+    //         // Code here
+    //     };
+
+    //     static::created($closure);
+
+    //     static::updated($closure);
+
+    //     static::deleted($closure);
+    // }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            $model->formatPropertyCode($model);
+        });
+    }
+
     // Appends
     public function getAssignedPersonInfoAttribute()
     {
@@ -91,5 +115,10 @@ class Item extends Model
     public function status()
     {
         return $this->hasOne(ItemStatus::class);
+    }
+
+    public function formatPropertyCode($model)
+    {
+        Item::update(['property_code' => $model->property_code . str_pad($model->id, 5, '0', STR_PAD_LEFT)]);
     }
 }
