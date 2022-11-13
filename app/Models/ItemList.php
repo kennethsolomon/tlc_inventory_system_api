@@ -17,7 +17,15 @@ class ItemList extends Model
         'quantity',
         'purchaser',
         'item_category_id',
+        'item_category_info'
     ];
+
+    protected $appends = ['item_category_info'];
+
+    public function getItemCategoryInfoAttribute()
+    {
+        return ItemCategory::find($this->item_category_id);
+    }
 
     // Relationships
     public function itemCategory()

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->enum('type', ['Consumable', 'Non-Consumable']);
             $table->enum('purchaser', ['Provincial Office', 'Regional Office']);
             $table->foreignId('item_category_id')->constrained();
-            $table->foreignId('item_id')->nullable()->constrained();
             $table->timestamps();
         });
     }
