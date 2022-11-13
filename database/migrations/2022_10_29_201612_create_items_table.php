@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreignId('received_by_id')->constrained('employees');
             $table->foreignId('received_from_id')->constrained('employees');
             $table->foreignId('assigned_person_id')->constrained('employees');
-            $table->foreignId('item_status_id')->constrained();
+            $table->foreignId('item_status_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

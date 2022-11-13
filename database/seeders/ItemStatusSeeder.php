@@ -17,10 +17,13 @@ class ItemStatusSeeder extends Seeder
     {
         $ItemStatus = [
             [
-                'name' => 'Active',
+                'name' => 'In Good Condition',
             ],
             [
-                'name' => 'Expired',
+                'name' => 'Damaged',
+            ],
+            [
+                'name' => 'Returned',
             ],
         ];
         ItemStatus::upsert($ItemStatus, []);

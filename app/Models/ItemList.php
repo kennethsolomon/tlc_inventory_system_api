@@ -24,4 +24,9 @@ class ItemList extends Model
     {
         return $this->hasOne(ItemCategory::class);
     }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
 }

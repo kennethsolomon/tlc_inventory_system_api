@@ -52,6 +52,7 @@ class Item extends Model
 
         static::created(function ($model) {
             $model->formatPropertyCode($model);
+            $model->addItemList($model);
         });
     }
 
@@ -120,5 +121,32 @@ class Item extends Model
     public function formatPropertyCode($model)
     {
         Item::update(['property_code' => $model->property_code . str_pad($model->id, 5, '0', STR_PAD_LEFT)]);
+    }
+
+    public function addItemList($model)
+    {
+        $item_list = ItemList::whereDescription($model->description);
+
+        if ($item_list->exists()) {
+            $item_list_data = $item_list->first();
+            // $item_list_data->property_name = $model->property_name;
+            // $item_list_data->description = $model->description;
+            // $item_list_data->cost = $model->cost;
+            // $item_list_data->type = $model->type;
+            // $item_list_data->purchaser = $model->purchaser;
+            // $item_list_data->item_category_id = $model->item_category_id;
+            $item_list_data->quantity += 1;
+            $item_list_data->save();
+        } else {
+            $item_list_data = new ItemList;
+            $item_list_data->property_name = $model->property_name;
+            $item_list_data->description = $model->description;
+            $item_list_data->cost = $model->cost;
+            $item_list_data->type = $model->type;
+            $item_list_data->purchaser = $model->purchaser;
+            $item_list_data->item_category_id = $model->item_category_id;
+            $item_list_data->quantity = 1;
+            $item_list_data->save();
+        }
     }
 }
