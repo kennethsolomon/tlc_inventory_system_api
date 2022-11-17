@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('item_lists', function (Blueprint $table) {
             $table->id();
             $table->string('property_name');
-            $table->string('description');
+            $table->string('description')->unique();
             $table->integer('cost');
             $table->integer('quantity');
             $table->enum('type', ['Consumable', 'Non-Consumable']);

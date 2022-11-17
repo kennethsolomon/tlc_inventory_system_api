@@ -54,6 +54,10 @@ class Item extends Model
             $model->formatPropertyCode($model);
             $model->addItemList($model);
         });
+
+        static::updated(function ($model) {
+            $model->addItemList($model);
+        });
     }
 
     // Appends
