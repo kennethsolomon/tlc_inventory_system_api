@@ -60,10 +60,7 @@ class ItemResource extends JsonResource
                 'id' => (string)$this->item_category_info->id,
                 'name' => $this->item_category_info->name,
             ],
-            'item_status_info' => [
-                'id' => (string)$this->item_status_info->id,
-                'name' => $this->item_status_info->name,
-            ],
+            'item_status' => ItemStatusResource::collection($this->whenLoaded('item_status')),
             'location_info' => [
                 'id' => (string)$this->location_info->id,
                 'name' => $this->location_info->name,

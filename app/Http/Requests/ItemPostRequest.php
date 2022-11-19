@@ -40,7 +40,7 @@ class ItemPostRequest extends FormRequest
             'received_by_id' => 'required|exists:App\Models\Employee,id',
             'received_from_id' => 'required|exists:App\Models\Employee,id',
             'assigned_person_id' => 'required|exists:App\Models\Employee,id',
-            'item_status_id' => 'exists:App\Models\ItemStatus,id',
+            'item_status_id' => 'nullable',
         ];
     }
 }

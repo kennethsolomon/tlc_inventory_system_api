@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('property_name');
             $table->string('property_code');
-            $table->string('description')->unique();
+            $table->string('description');
             $table->string('serial_number');
             $table->integer('quantity');
             $table->integer('cost');
