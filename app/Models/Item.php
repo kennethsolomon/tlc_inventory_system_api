@@ -142,15 +142,15 @@ class Item extends Model
             $item_list_data->quantity +=  1;
             $item_list_data->save();
         } else {
-            // $item_list_data = new ItemList;
-            // $item_list_data->property_name = $model->property_name;
-            // $item_list_data->description = $model->description;
-            // $item_list_data->cost = $model->cost;
-            // $item_list_data->type = $model->type;
-            // $item_list_data->purchaser = $model->purchaser;
-            // $item_list_data->item_category_id = $model->item_category_id;
-            // $item_list_data->quantity = 1;
-            // $item_list_data->save();
+            $item_list_data = new ItemList;
+            $item_list_data->property_name = $model->property_name;
+            $item_list_data->description = $model->description;
+            $item_list_data->cost = $model->cost;
+            $item_list_data->type = $model->type;
+            $item_list_data->purchaser = $model->purchaser;
+            $item_list_data->item_category_id = $model->item_category_id;
+            $item_list_data->quantity = 1;
+            $item_list_data->save();
         }
     }
 }
