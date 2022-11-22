@@ -42,6 +42,7 @@ Route::delete("delete_item_status/{item_status}", [\App\Http\Controllers\ItemSta
 
 // Item List
 Route::get("item_list", [\App\Http\Controllers\ItemListController::class, 'index']);
+Route::post("item_list_update", [\App\Http\Controllers\ItemListController::class, 'update']);
 
 // Location
 Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
