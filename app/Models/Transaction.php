@@ -21,5 +21,6 @@ class Transaction extends Model
         'lender_agency',
         'approved_by',
         'approver_designation',
+        'item_data',
     ];
 }
