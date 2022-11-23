@@ -23,4 +23,8 @@ class Transaction extends Model
         'approver_designation',
         'item_data',
     ];
+
+    protected $casts = [
+        'item_data' => 'array',
+    ];
 }
