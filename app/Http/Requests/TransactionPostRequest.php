@@ -27,6 +27,7 @@ class TransactionPostRequest extends FormRequest
             'transaction_no' => 'string',
             'condition' => 'string',
             'transfer_type' => 'string',
+            'reason_for_transfer' => 'string',
             'received_by' => 'string',
             'borrower_designation' => 'string',
             'borrower_agency' => 'string',

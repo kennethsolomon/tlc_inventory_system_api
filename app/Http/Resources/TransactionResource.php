@@ -19,6 +19,7 @@ class TransactionResource extends JsonResource
             'transaction_no' => $this->transaction_no,
             'condition' => $this->condition,
             'transfer_type' => $this->transfer_type,
+            'reason_for_transfer' => $this->reason_for_transfer,
             'received_by' => $this->received_by,
             'borrower_designation' => $this->borrower_designation,
             'borrower_agency' => $this->borrower_agency,

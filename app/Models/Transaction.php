@@ -13,6 +13,7 @@ class Transaction extends Model
         'transaction_no',
         'condition',
         'transfer_type',
+        'reason_for_transfer',
         'received_by',
         'borrower_designation',
         'borrower_agency',
