@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemPostRequest;
 use App\Http\Requests\ItemStatusPostRequest;
+use App\Http\Requests\TransactionPostRequest;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Models\ItemList;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,56 +53,8 @@ class ItemController extends Controller
                         ['id' => $request->id],
                         $fields
                     );
-
-                    // $item_list = ItemList::wherePropertyName($request->property_name);
-
-                    // if ($item_list->exists()) {
-                    //     $item_list_data = $item_list->first();
-                    //     $item_list_data->property_name = $request->property_name;
-                    //     $item_list_data->description = $request->description;
-                    //     $item_list_data->cost = $request->cost;
-                    //     $item_list_data->type = $request->type;
-                    //     $item_list_data->purchaser = $request->purchaser;
-                    //     $item_list_data->item_category_id = $request->item_category_id;
-                    //     $item_list_data->quantity += 1;
-                    //     $item_list_data->save();
-                    // } else {
-                    //     $item_list_data = new ItemList;
-                    //     $item_list_data->property_name = $request->property_name;
-                    //     $item_list_data->description = $request->description;
-                    //     $item_list_data->cost = $request->cost;
-                    //     $item_list_data->type = $request->type;
-                    //     $item_list_data->purchaser = $request->purchaser;
-                    //     $item_list_data->item_category_id = $request->item_category_id;
-                    //     $item_list_data->quantity = $request->quantity;
-                    //     $item_list_data->save();
-                    // }
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             DB::commit();
             return (new ItemResource($item))->response()->setStatusCode(201);
@@ -109,17 +63,6 @@ class ItemController extends Controller
             DB::rollBack();
             return response(null, Response::HTTP_NOT_IMPLEMENTED);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Item $item)
-    {
-        return (new ItemResource($item))->response()->setStatusCode(202);
     }
 
     /**

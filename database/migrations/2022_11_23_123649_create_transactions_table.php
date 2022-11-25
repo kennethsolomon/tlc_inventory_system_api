@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('transaction_no');
             $table->enum('condition', ['New', 'Used', 'Damaged']);
             $table->string('transfer_type');
+            $table->string('transfer_type_others')->nullable();
             $table->string('reason_for_transfer');
             $table->string('received_by');
             $table->string('borrower_designation');

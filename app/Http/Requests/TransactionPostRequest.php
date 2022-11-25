@@ -13,7 +13,7 @@ class TransactionPostRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -27,6 +27,7 @@ class TransactionPostRequest extends FormRequest
             'transaction_no' => 'string',
             'condition' => 'string',
             'transfer_type' => 'string',
+            'transfer_type_others' => 'nullable|string',
             'reason_for_transfer' => 'string',
             'received_by' => 'string',
             'borrower_designation' => 'string',
