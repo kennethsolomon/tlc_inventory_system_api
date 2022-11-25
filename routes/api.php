@@ -53,3 +53,4 @@ Route::delete("delete_location/{location}", [\App\Http\Controllers\LocationContr
 // Transfer Property
 Route::get("transaction_list", [\App\Http\Controllers\TransactionController::class, 'index']);
 Route::post("transfer_property", [\App\Http\Controllers\TransactionController::class, 'updateOrCreateTransaction']);
+Route::delete("delete_transaction/{transaction}", [\App\Http\Controllers\TransactionController::class, 'destroy']);

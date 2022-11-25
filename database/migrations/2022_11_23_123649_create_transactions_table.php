@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('approved_by');
             $table->string('approver_designation');
             $table->json('item_data')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

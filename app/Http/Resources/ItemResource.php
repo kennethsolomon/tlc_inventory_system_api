@@ -33,6 +33,7 @@ class ItemResource extends JsonResource
             'received_from_id' => $this->received_from_id,
             'assigned_person_id' => $this->assigned_person_id,
             'item_status_id' => $this->item_status_id,
+            'transaction_status' => $this->transaction_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'assigned_person_info' => [

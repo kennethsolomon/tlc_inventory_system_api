@@ -39,4 +39,20 @@ class TransactionController extends Controller
       return response(null, Response::HTTP_NOT_IMPLEMENTED);
     }
   }
+
+  public function destroy(Transaction $transaction)
+  {
+    try {
+      DB::beginTransaction();
+      $transaction->delete();
+
+      DB::commit();
+
+      return response($transaction, Response::HTTP_OK);
+    } catch (\Throwable $th) {
+      throw $th;
+      DB::rollBack();
+      return response(null, Response::HTTP_NOT_IMPLEMENTED);
+    }
+  }
 }
