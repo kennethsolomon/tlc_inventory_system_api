@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionPostRequest;
 use App\Http\Resources\ItemListResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\Log;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,8 @@ class TransactionController extends Controller
         $fields
       );
 
+      $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Transaction  with ID ' . $transaction->id . ' has been created/updated.'];
+      Log::create($log);
       DB::commit();
       return (new TransactionResource($transaction))->response()->setStatusCode(201);
     } catch (\Throwable $th) {
@@ -47,6 +50,9 @@ class TransactionController extends Controller
       $transaction->delete();
 
       DB::commit();
+
+      $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Loan with ' . $transaction->id . ' has been deleted.'];
+      Log::create($log);
 
       return response($transaction, Response::HTTP_OK);
     } catch (\Throwable $th) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LocationPostRequest;
 use App\Http\Resources\LocationResource;
 use App\Models\Location;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,8 @@ class LocationController extends Controller
                 $fields
             );
 
+            $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Location  with ID ' . $location->id . ' has been created/updated.'];
+            Log::create($log);
             DB::commit();
             return (new LocationResource($location))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
@@ -74,6 +77,8 @@ class LocationController extends Controller
 
             DB::commit();
 
+            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Location with ' . $location->id . ' has been deleted.'];
+            Log::create($log);
             return response(null, Response::HTTP_OK);
         } catch (\Throwable $th) {
             throw $th;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserPostRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,9 @@ class AuthController extends Controller
 
     $request->session()->regenerate();
 
+    $log = ['user' => auth()->user()->email, 'action' => 'Logged In', 'description' => 'User has logged in successfully.'];
+    Log::create($log);
+
     return response()->json(Auth::user(), 201);
   }
 
@@ -72,6 +76,8 @@ class AuthController extends Controller
 
     $request->session()->regenerateToken();
 
+    $log = ['user' => auth()->user()->email, 'action' => 'Logged Out', 'description' => 'User has logged out successfully.'];
+    Log::create($log);
     return response()->json(null, 200);
   }
 }

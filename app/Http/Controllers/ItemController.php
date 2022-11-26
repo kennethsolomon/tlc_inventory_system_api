@@ -8,9 +8,9 @@ use App\Http\Requests\TransactionPostRequest;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Models\ItemList;
+use App\Models\Log;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
@@ -44,15 +44,20 @@ class ItemController extends Controller
                     ['id' => $request->id],
                     $fields + ['quantity' => 1]
                 );
+
+                $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Item  with ID ' . $item->id . ' has been created/updated.'];
+                Log::create($log);
             } else {
                 for ($i = 1; $i <= $request->quantity; $i++) {
-                    Log::debug($request->quantity);
                     $fields = $request->validated();
 
                     $item = Item::updateOrCreate(
                         ['id' => $request->id],
                         $fields
                     );
+
+                    $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Item  with ID ' . $item->id . ' has been created/updated.'];
+                    Log::create($log);
                 }
             }
 
@@ -78,6 +83,10 @@ class ItemController extends Controller
             $item->delete();
 
             DB::commit();
+
+            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Item with ' . $item->id . ' has been deleted.'];
+            Log::create($log);
+
 
             return response($item, Response::HTTP_OK);
         } catch (\Throwable $th) {

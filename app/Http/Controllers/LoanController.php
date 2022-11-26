@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoanPostRequest;
 use App\Http\Resources\LoanResource;
 use App\Models\Loan;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,13 +25,15 @@ class LoanController extends Controller
 
             $fields = $request->validated();
 
-            $transaction = Loan::updateOrCreate(
+            $loan = Loan::updateOrCreate(
                 ['id' => $request->id],
                 $fields
             );
 
+            $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Loan  with ID ' . $loan->id . ' has been created/updated.'];
+            Log::create($log);
             DB::commit();
-            return (new LoanResource($transaction))->response()->setStatusCode(201);
+            return (new LoanResource($loan))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
@@ -45,6 +48,9 @@ class LoanController extends Controller
             $loan->delete();
 
             DB::commit();
+
+            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Loan with ' . $loan->id . ' has been deleted.'];
+            Log::create($log);
 
             return response($loan, Response::HTTP_OK);
         } catch (\Throwable $th) {
