@@ -54,3 +54,9 @@ Route::delete("delete_location/{location}", [\App\Http\Controllers\LocationContr
 Route::get("transaction_list", [\App\Http\Controllers\TransactionController::class, 'index']);
 Route::post("transfer_property", [\App\Http\Controllers\TransactionController::class, 'updateOrCreateTransaction']);
 Route::delete("delete_transaction/{transaction}", [\App\Http\Controllers\TransactionController::class, 'destroy']);
+
+
+// Transfer Property
+Route::get("loan_list", [\App\Http\Controllers\LoanController::class, 'index']);
+Route::post("loan_property", [\App\Http\Controllers\LoanController::class, 'updateOrCreateLoan']);
+Route::delete("delete_loan/{loan}", [\App\Http\Controllers\LoanController::class, 'destroy']);
