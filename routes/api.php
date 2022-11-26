@@ -60,3 +60,7 @@ Route::delete("delete_transaction/{transaction}", [\App\Http\Controllers\Transac
 Route::get("loan_list", [\App\Http\Controllers\LoanController::class, 'index']);
 Route::post("loan_property", [\App\Http\Controllers\LoanController::class, 'updateOrCreateLoan']);
 Route::delete("delete_loan/{loan}", [\App\Http\Controllers\LoanController::class, 'destroy']);
+
+
+// Logs
+Route::get("logs", [\App\Http\Controllers\LogController::class, 'index']);
