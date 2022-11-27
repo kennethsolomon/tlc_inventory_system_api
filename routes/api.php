@@ -72,5 +72,5 @@ Route::get("loan_trash", [\App\Http\Controllers\LoanController::class, 'loanTras
 
 // Restore
 Route::get("restore_transaction/{id}", [\App\Http\Controllers\TransactionController::class, 'restore']);
-Route::get("restore_laon/{id}", [\App\Http\Controllers\LoanController::class, 'restore']);
+Route::get("restore_loan/{id}", [\App\Http\Controllers\LoanController::class, 'restore']);
 Route::get("restore_item/{id}", [\App\Http\Controllers\ItemController::class, 'restore']);

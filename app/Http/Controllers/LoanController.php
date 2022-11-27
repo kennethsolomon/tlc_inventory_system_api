@@ -24,6 +24,9 @@ class LoanController extends Controller
 
     public function restore($id)
     {
+
+        $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Loan  with ID ' . $id . ' has been restored.'];
+        Log::create($log);
         return Loan::withTrashed()->find($id)->restore();
     }
 

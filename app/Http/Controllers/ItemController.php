@@ -33,6 +33,9 @@ class ItemController extends Controller
 
     public function restore($id)
     {
+
+        $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Property  with ID ' . $id . ' has been restored.'];
+        Log::create($log);
         return Item::withTrashed()->find($id)->restore();
     }
 

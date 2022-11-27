@@ -9,6 +9,6 @@ class LogController extends Controller
 {
     public function index()
     {
-        return Log::all()->toArray();
+        return Log::orderBy('id', 'desc')->get();
     }
 }

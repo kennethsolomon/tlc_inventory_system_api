@@ -27,6 +27,9 @@ class TransactionController extends Controller
 
   public function restore($id)
   {
+
+    $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Transaction  with ID ' . $id . ' has been restored.'];
+    Log::create($log);
     return Transaction::withTrashed()->find($id)->restore();
   }
 
