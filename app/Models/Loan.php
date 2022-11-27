@@ -25,6 +25,7 @@ class Loan extends Model
         'purpose_of_loan',
         'condition',
         'item_data',
+        'deleted_at',
     ];
 
     protected $casts = [

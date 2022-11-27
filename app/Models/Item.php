@@ -30,6 +30,7 @@ class Item extends Model
         'received_from_id',
         'assigned_person_id',
         'item_status_id',
+        'deleted_at',
     ];
 
     protected $appends = ['assigned_person_info', 'item_category_info', 'item_status_info', 'location_info'];

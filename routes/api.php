@@ -69,3 +69,8 @@ Route::get("logs", [\App\Http\Controllers\LogController::class, 'index']);
 Route::get("item_trash", [\App\Http\Controllers\ItemController::class, 'itemTrash']);
 Route::get("transaction_trash", [\App\Http\Controllers\TransactionController::class, 'transactionTrash']);
 Route::get("loan_trash", [\App\Http\Controllers\LoanController::class, 'loanTrash']);
+
+// Restore
+Route::get("restore_transaction/{id}", [\App\Http\Controllers\TransactionController::class, 'restore']);
+Route::get("restore_laon/{id}", [\App\Http\Controllers\LoanController::class, 'restore']);
+Route::get("restore_item/{id}", [\App\Http\Controllers\ItemController::class, 'restore']);

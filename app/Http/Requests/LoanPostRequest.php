@@ -36,6 +36,8 @@ class LoanPostRequest extends FormRequest
             'purpose_of_loan' => 'string',
             'condition' => 'string',
             'item_data' => 'array',
+
+            'deleted_at' => 'nullable',
         ];
     }
 }

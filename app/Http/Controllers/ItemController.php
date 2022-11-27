@@ -31,6 +31,11 @@ class ItemController extends Controller
         return ItemResource::collection(Item::onlyTrashed()->get())->response()->setStatusCode(200);
     }
 
+    public function restore($id)
+    {
+        return Item::withTrashed()->find($id)->restore();
+    }
+
     /**
      * Create or Update the specified resource.
      *

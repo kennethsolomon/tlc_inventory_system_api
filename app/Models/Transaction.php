@@ -27,6 +27,7 @@ class Transaction extends Model
         'approved_by',
         'approver_designation',
         'item_data',
+        'deleted_at',
     ];
 
     protected $casts = [

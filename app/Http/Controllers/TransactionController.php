@@ -9,6 +9,7 @@ use App\Models\Log;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
@@ -24,6 +25,11 @@ class TransactionController extends Controller
     return TransactionResource::collection(Transaction::onlyTrashed()->get())->response()->setStatusCode(200);
   }
 
+  public function restore($id)
+  {
+    return Transaction::withTrashed()->find($id)->restore();
+  }
+
   public function updateOrCreateTransaction(TransactionPostRequest $request)
   {
     try {
@@ -32,6 +38,7 @@ class TransactionController extends Controller
 
       $fields = $request->validated();
 
+      FacadesLog::debug($fields);
       $transaction = Transaction::updateOrCreate(
         ['id' => $request->id],
         $fields

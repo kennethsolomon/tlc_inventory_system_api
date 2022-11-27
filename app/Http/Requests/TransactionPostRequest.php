@@ -24,20 +24,22 @@ class TransactionPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'transaction_no' => 'string',
-            'condition' => 'string',
-            'transfer_type' => 'string',
+            'transaction_no' => 'nullable|string',
+            'condition' => 'nullable|string',
+            'transfer_type' => 'nullable|string',
             'transfer_type_others' => 'nullable|string',
-            'reason_for_transfer' => 'string',
-            'received_by' => 'string',
-            'borrower_designation' => 'string',
-            'borrower_agency' => 'string',
-            'received_from' => 'string',
-            'lender_designation' => 'string',
-            'lender_agency' => 'string',
-            'approved_by' => 'string',
-            'approver_designation' => 'string',
-            'item_data' => 'array',
+            'reason_for_transfer' => 'nullable|string',
+            'received_by' => 'nullable|string',
+            'borrower_designation' => 'nullable|string',
+            'borrower_agency' => 'nullable|string',
+            'received_from' => 'nullable|string',
+            'lender_designation' => 'nullable|string',
+            'lender_agency' => 'nullable|string',
+            'approved_by' => 'nullable|string',
+            'approver_designation' => 'nullable|string',
+            'item_data' => 'nullable|array',
+
+            'deleted_at' => 'nullable',
         ];
     }
 }
