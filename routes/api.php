@@ -64,3 +64,8 @@ Route::delete("delete_loan/{loan}", [\App\Http\Controllers\LoanController::class
 
 // Logs
 Route::get("logs", [\App\Http\Controllers\LogController::class, 'index']);
+
+// Trash
+Route::get("item_trash", [\App\Http\Controllers\ItemController::class, 'itemTrash']);
+Route::get("transaction_trash", [\App\Http\Controllers\TransactionController::class, 'transactionTrash']);
+Route::get("loan_trash", [\App\Http\Controllers\LoanController::class, 'loanTrash']);

@@ -17,6 +17,11 @@ class LoanController extends Controller
         return LoanResource::collection(Loan::all())->response()->setStatusCode(200);
     }
 
+    public function loanTrash()
+    {
+        return LoanResource::collection(Loan::onlyTrashed()->get())->response()->setStatusCode(200);
+    }
+
     public function updateOrCreateLoan(LoanPostRequest $request)
     {
         try {

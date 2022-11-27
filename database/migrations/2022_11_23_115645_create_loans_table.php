@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('purpose_of_loan');
             $table->enum('condition', ['New', 'Used', 'Damaged']);
             $table->json('item_data')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

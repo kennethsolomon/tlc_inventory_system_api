@@ -36,6 +36,7 @@ class ItemResource extends JsonResource
             'transaction_status' => $this->transaction_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
             'assigned_person_info' => [
                 'id' => (string)$this->assigned_person_info->id,
                 'fname' => $this->assigned_person_info->fname,

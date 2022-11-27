@@ -31,6 +31,7 @@ class TransactionResource extends JsonResource
             'approver_designation' => $this->approver_designation,
             'item_data' => $this->item_data,
             'created_at' => $this->created_at,
+            'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
         ];
     }

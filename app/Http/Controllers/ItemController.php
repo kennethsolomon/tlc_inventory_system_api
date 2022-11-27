@@ -25,6 +25,12 @@ class ItemController extends Controller
         return ItemResource::collection(Item::all())->response()->setStatusCode(200);
     }
 
+
+    public function itemTrash()
+    {
+        return ItemResource::collection(Item::onlyTrashed()->get())->response()->setStatusCode(200);
+    }
+
     /**
      * Create or Update the specified resource.
      *

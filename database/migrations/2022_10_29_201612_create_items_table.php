@@ -32,6 +32,7 @@ return new class extends Migration
             $table->foreignId('assigned_person_id')->constrained('employees');
             $table->foreignId('item_status_id')->nullable();
             $table->string('transaction_status')->nullable()->default(null);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

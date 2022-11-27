@@ -19,6 +19,11 @@ class TransactionController extends Controller
     return TransactionResource::collection(Transaction::all())->response()->setStatusCode(200);
   }
 
+  public function transactionTrash()
+  {
+    return TransactionResource::collection(Transaction::onlyTrashed()->get())->response()->setStatusCode(200);
+  }
+
   public function updateOrCreateTransaction(TransactionPostRequest $request)
   {
     try {
