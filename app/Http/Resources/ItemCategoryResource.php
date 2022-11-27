@@ -17,6 +17,9 @@ class ItemCategoryResource extends JsonResource
         return [
             'id' => (string)$this->id,
             'name' => $this->name,
+            'count' => $this->count,
+            'consumable_count' => $this->consumable_count,
+            'non_consumable_count' => $this->non_consumable_count,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
