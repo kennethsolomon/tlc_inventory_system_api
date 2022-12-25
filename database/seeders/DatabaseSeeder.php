@@ -17,8 +17,13 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'email' => 'admin',
-            'position' => 'CHED - PTS III',
+            'position' => 'DICT ADMIN',
             'role' => 'Admin',
+        ]);
+        \App\Models\User::factory()->create([
+            'email' => 'staff',
+            'position' => 'DICT STAFF',
+            'role' => 'Staff',
         ]);
         \App\Models\Employee::factory(10)->create();
         \App\Models\ItemCategory::factory(10)->create();
