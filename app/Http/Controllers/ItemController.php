@@ -58,7 +58,7 @@ class ItemController extends Controller
                     $fields + ['quantity' => 1]
                 );
 
-                $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Item  with ID ' . $item->id . ' has been created/updated.'];
+                $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Property  with ID ' . $item->id . ' has been created/updated.'];
                 Log::create($log);
             } else {
                 for ($i = 1; $i <= $request->quantity; $i++) {
@@ -69,7 +69,7 @@ class ItemController extends Controller
                         $fields
                     );
 
-                    $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Item  with ID ' . $item->id . ' has been created/updated.'];
+                    $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Property  with ID ' . $item->id . ' has been created/updated.'];
                     Log::create($log);
                 }
             }
@@ -97,7 +97,7 @@ class ItemController extends Controller
 
             DB::commit();
 
-            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Item with ' . $item->id . ' has been deleted.'];
+            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Property with ' . $item->id . ' has been deleted.'];
             Log::create($log);
 
 

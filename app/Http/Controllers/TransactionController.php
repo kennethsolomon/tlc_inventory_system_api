@@ -27,7 +27,7 @@ class TransactionController extends Controller
 
   public function restore($id)
   {
-    $log = ['user' => auth()->user()->email, 'action' => 'Restore', 'description' => 'Transaction  with ID ' . $id . ' has been restored.'];
+    $log = ['user' => auth()->user()->email, 'action' => 'Restore', 'description' => 'Property with Transaction ID of ' . $id . ' has been restored.'];
     Log::create($log);
     return Transaction::withTrashed()->find($id)->restore();
   }
@@ -46,7 +46,7 @@ class TransactionController extends Controller
         $fields
       );
 
-      $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Transaction  with ID ' . $transaction->id . ' has been created/updated.'];
+      $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Property with Transaction ID of ' . $transaction->id . ' has been created/updated.'];
       Log::create($log);
       DB::commit();
       return (new TransactionResource($transaction))->response()->setStatusCode(201);
@@ -65,7 +65,7 @@ class TransactionController extends Controller
 
       DB::commit();
 
-      $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Loan with ' . $transaction->id . ' has been deleted.'];
+      $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Transaction with ' . $transaction->id . ' has been deleted.'];
       Log::create($log);
 
       return response($transaction, Response::HTTP_OK);
