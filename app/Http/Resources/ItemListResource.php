@@ -25,10 +25,10 @@ class ItemListResource extends JsonResource
             'item_category_id' => $this->item_category_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            // 'item_category_info' => [
-            //     'id' => (string)$this->item_category_info->id,
-            //     'name' => $this->item_category_info->name,
-            // ],
+            'item_category_info' => [
+                'id' => (string)$this->item_category_info->id,
+                'name' => $this->item_category_info->name,
+            ],
         ];
     }
 }
