@@ -43,6 +43,7 @@ class Loan extends Model
                 $item_ = Item::find($item['id']);
                 $item_->transaction_status = 'transfered';
                 $item_->save();
+                $item_->delete();
 
                 if ($item_list->quantity > 0) {
                     $item_list->quantity -= 1;
@@ -57,6 +58,11 @@ class Loan extends Model
                 $item_list = ItemList::whereDescription($item['description'])->first();
                 $item_list->quantity += 1;
                 $item_list->save();
+
+                $item_ = Item::withTrashed()->find($item['id']);
+                $item_->transaction_status = null;
+                $item_->restore();
+                $item_->save();
             }
         });
     }

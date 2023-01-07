@@ -45,6 +45,7 @@ class Transaction extends Model
                 $item_ = Item::find($item['id']);
                 $item_->transaction_status = 'transfered';
                 $item_->save();
+                $item_->delete();
 
                 Log::debug($item_list);
                 if ($item_list->quantity > 0) {
@@ -60,6 +61,11 @@ class Transaction extends Model
                 $item_list = ItemList::whereDescription($item['description'])->first();
                 $item_list->quantity += 1;
                 $item_list->save();
+
+                $item_ = Item::withTrashed()->find($item['id']);
+                $item_->transaction_status = null;
+                $item_->restore();
+                $item_->save();
             }
         });
     }
