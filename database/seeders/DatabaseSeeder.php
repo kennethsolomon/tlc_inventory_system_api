@@ -34,6 +34,6 @@ class DatabaseSeeder extends Seeder
             // ExpenseTypeSeeder::class
         ]);
 
-        \App\Models\Item::factory(10)->create();
+        // \App\Models\Item::factory(10)->create();
     }
 }

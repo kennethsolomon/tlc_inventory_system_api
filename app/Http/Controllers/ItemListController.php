@@ -33,11 +33,12 @@ class ItemListController extends Controller
         }
 
         $item = Item::where([['description', '=', $item_list->description], ['quantity', '>=', $request->quantity]])->first();
-        if ($item) {
-            $item->quantity -= $request->quantity;
-            $item->save();
-        } else {
-            throw new Exception("Not enough stock, Invalid Operation.", 500);
-        }
+        $item->delete();
+        // if ($item) {
+        //     $item->quantity -= $request->quantity;
+        //     $item->save();
+        // } else {
+        //     throw new Exception("Not enough stock, Invalid Operation.", 500);
+        // }
     }
 }
