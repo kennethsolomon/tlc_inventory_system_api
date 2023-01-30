@@ -12,8 +12,11 @@ class Employee extends Model
         'fname',
         'mname',
         'lname',
-        'office',
+        'address',
+        'position',
+        'salary',
     ];
+
     protected $appends = ['fullname'];
 
     public function getFullnameAttribute()

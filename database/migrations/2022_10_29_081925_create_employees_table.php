@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('fname');
             $table->string('mname');
             $table->string('lname');
-            $table->string('office');
+            $table->string('address');
+            $table->string('position');
+            $table->integer('salary');
             $table->timestamps();
         });
     }

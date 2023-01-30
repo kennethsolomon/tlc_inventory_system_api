@@ -25,10 +25,11 @@ class EmployeePostRequest extends FormRequest
     {
         return [
             'fname' => 'required|string',
-            'fname' => 'required|string',
             'mname' => 'string',
             'lname' => 'required|string',
-            'office' => 'required|string',
+            'address' => 'required|string',
+            'position' => 'required|string',
+            'salary' => 'required|integer',
         ];
     }
 }

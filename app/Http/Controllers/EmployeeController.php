@@ -42,8 +42,8 @@ class EmployeeController extends Controller
 
             DB::commit();
 
-            $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Employee with ID ' . $employee->id . ' has been created/updated.'];
-            Log::create($log);
+            // $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Employee with ID ' . $employee->id . ' has been created/updated.'];
+            // Log::create($log);
             return (new EmployeeResource($employee))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
@@ -76,8 +76,8 @@ class EmployeeController extends Controller
             $employee->delete();
 
             DB::commit();
-            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Employee with ' . $employee->id . ' has been deleted.'];
-            Log::create($log);
+            // $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Employee with ' . $employee->id . ' has been deleted.'];
+            // Log::create($log);
 
             return response(null, Response::HTTP_OK);
         } catch (\Throwable $th) {
