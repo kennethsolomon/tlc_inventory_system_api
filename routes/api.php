@@ -74,3 +74,14 @@ Route::get("loan_trash", [\App\Http\Controllers\LoanController::class, 'loanTras
 Route::get("restore_transaction/{id}", [\App\Http\Controllers\TransactionController::class, 'restore']);
 Route::get("restore_loan/{id}", [\App\Http\Controllers\LoanController::class, 'restore']);
 Route::get("restore_item/{id}", [\App\Http\Controllers\ItemController::class, 'restore']);
+
+
+
+// V2
+// {consumable} = consumable id
+Route::post("add_stock/{consumable}", [\App\Http\Controllers\ConsumableController::class, 'addStock']);
+Route::post("check_out/{consumable}", [\App\Http\Controllers\ConsumableController::class, 'checkOut']);
+
+Route::get("consumables", [\App\Http\Controllers\ConsumableController::class, 'index']);
+
+Route::get("consumables_history", [\App\Http\Controllers\ConsumableHistoryController::class, 'index']);

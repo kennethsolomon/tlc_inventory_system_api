@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('serial_number');
             $table->integer('cost');
             $table->string('location');
-            $table->date('date_of_purchased');
-            $table->date('warranty_expiration');
-            $table->date('end_of_life');
-            $table->enum('status', ['available', 'unavailable'])->default('available');
+            $table->string('date_of_purchased');
+            $table->string('warranty_expiration');
+            $table->string('life_expectancy');
+            $table->enum('status', ['Active', 'unavailable'])->default('Active');
 
             $table->foreignid('assigned_to')->nullable()->constrained('employees');
             $table->timestamps();

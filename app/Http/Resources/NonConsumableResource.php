@@ -24,7 +24,7 @@ class NonConsumableResource extends JsonResource
             'location' => $this->location,
             'date_of_purchased' => $this->date_of_purchased,
             'warranty_expiration' => $this->warranty_expiration,
-            'end_of_life' => $this->end_of_life,
+            'life_expectancy' => $this->life_expectancy,
             'status' => $this->status,
             'assigned_to' => $this->assigned_to,
             'created_at' => $this->created_at,

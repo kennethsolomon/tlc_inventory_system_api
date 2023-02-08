@@ -18,7 +18,7 @@ class NonConsumable extends Model
         'location',
         'date_of_purchased',
         'warranty_expiration',
-        'end_of_life',
+        'life_expectancy',
         'status',
         'assigned_to'
     ];

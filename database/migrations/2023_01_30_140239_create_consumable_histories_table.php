@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('consumable_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('consumable_id')->constrained('comsumables');
-            $table->foreignId('received_by_id')->constrained('employees');
+            $table->foreignId('consumable_id')->nullable()->constrained('consumables');
+            $table->foreignId('received_by_id')->nullable()->constrained('employees');
             $table->string('agency');
             $table->date('check_out_date');
             $table->integer('quantity');

@@ -30,11 +30,11 @@ class NonConsumablePostRequest extends FormRequest
             'serial_number' => 'required|string',
             'cost' => 'required|integer',
             'location' => 'required|string',
-            'date_of_purchased' => 'required|date',
-            'warranty_expiration' => 'required|date',
-            'end_of_life' => 'required|date',
+            'date_of_purchased' => 'required|string',
+            'warranty_expiration' => 'required|string',
+            'life_expectancy' => 'required|string',
             'status' => 'required|string',
-            'assigned_to' => 'required|exists:App\Models\Employee,id',
+            'assigned_to' => 'nullable|exists:App\Models\Employee,id',
         ];
     }
 }
