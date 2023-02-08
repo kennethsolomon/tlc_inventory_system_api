@@ -85,3 +85,9 @@ Route::post("check_out/{consumable}", [\App\Http\Controllers\ConsumableControlle
 Route::get("consumables", [\App\Http\Controllers\ConsumableController::class, 'index']);
 
 Route::get("consumables_history", [\App\Http\Controllers\ConsumableHistoryController::class, 'index']);
+
+
+Route::post("lend_property/{non_consumable}", [\App\Http\Controllers\NonConsumableController::class, 'lendProperty']);
+Route::post("return_property/{non_consumable_history}", [\App\Http\Controllers\NonConsumableController::class, 'returnProperty']);
+
+Route::get("maintenance", [\App\Http\Controllers\NonConsumableController::class, 'getMaintenance']);

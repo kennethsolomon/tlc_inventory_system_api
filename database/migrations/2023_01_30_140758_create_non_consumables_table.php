@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('date_of_purchased');
             $table->string('warranty_expiration');
             $table->string('life_expectancy');
-            $table->enum('status', ['Active', 'unavailable'])->default('Active');
+            $table->enum('status', ['Available', 'Unavailable'])->default('Available');
 
             $table->foreignid('assigned_to')->nullable()->constrained('employees');
             $table->timestamps();
