@@ -7,6 +7,7 @@ use App\Http\Resources\ConsumableHistoryResource;
 use App\Http\Resources\ConsumableResource;
 use App\Models\Consumable;
 use App\Models\ConsumableHistory;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
@@ -87,18 +88,22 @@ class ConsumableController extends Controller
         try {
             DB::beginTransaction();
 
-            $consumable_history = ConsumableHistory::create([
-                'consumable_id' => $consumable->id,
-                'received_by_id' => $request->received_by_id,
-                'agency' => $request->agency,
-                'check_out_date' => $request->date,
-                'quantity' => $request->quantity
-            ]);
+            if ($request->quantity != 0) {
+                $consumable_history = ConsumableHistory::create([
+                    'consumable_id' => $consumable->id,
+                    'received_by_id' => $request->received_by_id,
+                    'agency' => $request->agency,
+                    'check_out_date' => $request->date,
+                    'quantity' => $request->quantity
+                ]);
 
-            $consumable->quantity -= $request->quantity;
-            $consumable->save();
-            DB::commit();
-            return (new ConsumableHistoryResource($consumable_history))->response()->setStatusCode(201);
+                $consumable->quantity -= $request->quantity;
+                $consumable->save();
+                DB::commit();
+                return (new ConsumableHistoryResource($consumable_history))->response()->setStatusCode(201);
+            } else {
+                throw new Exception("Zero is not a valid quantity, Invalid Operation.", 500);
+            }
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
