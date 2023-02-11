@@ -91,7 +91,7 @@ class ConsumableController extends Controller
                 'consumable_id' => $consumable->id,
                 'received_by_id' => $request->received_by_id,
                 'agency' => $request->agency,
-                'check_out_date' => now(),
+                'check_out_date' => $request->date,
                 'quantity' => $request->quantity
             ]);
 

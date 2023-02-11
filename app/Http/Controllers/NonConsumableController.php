@@ -105,15 +105,18 @@ class NonConsumableController extends Controller
     public function getMaintenance()
     {
         $expired = [];
+        $available = [];
         $non_consumables = NonConsumable::get()->toArray();
         foreach ($non_consumables as $non_consumable) {
             $warranty = $non_consumable['warranty_expiration'];
             $is_expired = Carbon::createFromFormat('m/d/Y', $warranty)->isPast();
             if ($is_expired) {
                 $expired[] = ['warranty_expired_since' => Carbon::createFromFormat('m/d/Y', $warranty)->diffForHumans()] + $non_consumable;
+            } else {
+                $available[] = $non_consumable;
             }
         }
 
-        return $expired;
+        return ['expired' =>  $expired, 'available' => $available];
     }
 }
