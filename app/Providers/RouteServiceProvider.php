@@ -19,6 +19,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+    /** @var string $apiNamespace */
+    protected $apiNamespace = 'App\Http\Controllers\Api';
+
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      *
@@ -35,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            $this->mapApiRoutes();
         });
     }
 
@@ -47,6 +53,40 @@ class RouteServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapApiRoutes()
+    {
+        // Route::group([
+        //     'middleware' => ['api', 'api_version:v1'],
+        //     'namespace'  => "{$this->apiNamespace}\V1",
+        //     'prefix'     => 'api/v1',
+        // ], function ($router) {
+        //     require base_path('routes/api_v1.php');
+        // });
+
+        // Route::group([
+        //     'middleware' => ['api', 'api_version:v2'],
+        //     'namespace'  => "{$this->apiNamespace}\V2",
+        //     'prefix'     => 'api/v2',
+        // ], function ($router) {
+        //     require base_path('routes/api_v2.php');
+        // });
+
+        Route::group([
+            'middleware' => ['api', 'api_version:v3'],
+            'namespace'  => "{$this->apiNamespace}\V3",
+            'prefix'     => 'api/v3',
+        ], function ($router) {
+            require base_path('routes/api_v3.php');
         });
     }
 }
