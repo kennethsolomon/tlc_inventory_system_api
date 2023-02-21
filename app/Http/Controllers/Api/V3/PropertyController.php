@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V3;
 
 use App\Http\Requests\PropertyPostRequest;
+use App\Http\Resources\LendPropertyResource;
 use App\Http\Resources\PropertyHistoryResource;
 use App\Http\Resources\PropertyResource;
+use App\Models\LendProperty;
 use App\Models\Log;
 use App\Models\Property;
 use App\Models\PropertyHistory;
@@ -72,6 +74,7 @@ class PropertyController
         }
     }
 
+    // Transfer Property
     public function transferProperty(Request $request, Property $property)
     {
         try {
@@ -110,5 +113,63 @@ class PropertyController
     public function propertyHistory()
     {
         return PropertyHistoryResource::collection(PropertyHistory::all())->response()->setStatusCode(200);
+    }
+
+
+    // Lend Property
+    public function lendProperty(Request $request, Property $property)
+    {
+        try {
+            DB::beginTransaction();
+            $lend_property = LendProperty::create([
+                'property_id' => $property->id,
+                'property_code' => $property->property_code,
+                'category' => $property->assigned_to,
+                'date_of_lending' => $request->date_of_lending,
+                'borrower_name' => $request->borrower_name,
+                'location' => $request->location,
+                'reason_for_lending' => $request->reason_for_lending,
+                'is_lend' => false,
+                'returned_date' => null
+            ]);
+
+            DB::commit();
+            return (new LendPropertyResource($lend_property))->response()->setStatusCode(201);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
+    }
+
+    public function lendApproved(LendProperty $lend_property)
+    {
+        $lend_property->is_lend = true;
+        $lend_property->save();
+
+        $property = Property::whereId($lend_property->property_id)->first();
+
+        $property->status = 'Unavailable';
+        $property->save();
+
+        return (new PropertyResource($property))->response()->setStatusCode(201);
+    }
+
+    public function returnProperty(Request $request, LendProperty $lend_property)
+    {
+        $lend_property->returned_date = $request->returned_date;
+        $lend_property->save();
+
+        $property = Property::whereId($lend_property->property_id)->first();
+
+        $property->status = 'In Custody';
+        $property->save();
+
+        return (new PropertyResource($property))->response()->setStatusCode(201);
+    }
+
+    public function lendList()
+    {
+        return LendPropertyResource::collection(LendProperty::all())->response()->setStatusCode(200);
     }
 }

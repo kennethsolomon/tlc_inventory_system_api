@@ -12,3 +12,13 @@ Route::delete("delete_property/{property}", [\App\Http\Controllers\Api\V3\Proper
 
 Route::post("transfer_property/{property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'transferProperty']);
 Route::get("property_history", [\App\Http\Controllers\Api\V3\PropertyController::class, 'propertyHistory']);
+
+
+
+Route::get("lend_list", [\App\Http\Controllers\Api\V3\PropertyController::class, 'lendList']);
+
+Route::post("lend_property/{property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'lendProperty']);
+
+Route::post("lend_approved/{lend_property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'lendApproved']);
+
+Route::post("return_property/{lend_property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'returnProperty']);
