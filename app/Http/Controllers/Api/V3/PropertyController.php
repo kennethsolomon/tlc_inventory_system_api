@@ -77,8 +77,6 @@ class PropertyController
         try {
             DB::beginTransaction();
 
-            $history_status = '';
-
             $property->assigned_to = $request->assigned_to;
             $property->location = $request->location;
             $property->status = $request->status;
