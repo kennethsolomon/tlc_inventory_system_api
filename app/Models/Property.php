@@ -24,7 +24,6 @@ class Property extends Model
     ];
 
 
-    // TODO: Create migrations
     public function propertyHistories()
     {
         return $this->hasMany(PropertyHistory::class);
