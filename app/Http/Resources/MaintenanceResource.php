@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PropertyResource extends JsonResource
+class MaintenanceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,21 +15,17 @@ class PropertyResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (string)$this->id,
+            'property_id' => $this->property_id,
             'property_code' => $this->property_code,
-            'serial_number' => $this->serial_number,
-            'purchase_date' => $this->purchase_date,
-            'warranty_period' => $this->warranty_period,
-            'brand' => $this->brand,
-            'model' => $this->model,
             'category' => $this->category,
-            'description' => $this->description,
+            'category' => $this->category,
+            'purchase_date' => $this->purchase_date,
             'assigned_to' => $this->assigned_to,
             'location' => $this->location,
-            'status' => $this->status,
-            'property_histories' => PropertyHistoryResource::collection($this->whenLoaded('propertyHistories')), // when has eager loading you can use this code to load the relationship
+            'has_been_disposed' => $this->has_been_disposed,
+            'has_been_fixed' => $this->has_been_fixed,
             'created_at' => $this->created_at,
-            'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
         ];
     }

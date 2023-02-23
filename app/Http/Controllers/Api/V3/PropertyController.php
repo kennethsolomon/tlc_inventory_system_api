@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api\V3;
 
 use App\Http\Requests\PropertyPostRequest;
 use App\Http\Resources\LendPropertyResource;
+use App\Http\Resources\MaintenanceResource;
 use App\Http\Resources\PropertyHistoryResource;
 use App\Http\Resources\PropertyResource;
 use App\Models\LendProperty;
 use App\Models\Log;
+use App\Models\Maintenance;
 use App\Models\Property;
 use App\Models\PropertyHistory;
 use Illuminate\Http\Request;
@@ -110,11 +112,10 @@ class PropertyController
         }
     }
 
-    public function propertyHistory()
+    public function propertyHistory(Property $property)
     {
-        return PropertyHistoryResource::collection(PropertyHistory::all())->response()->setStatusCode(200);
+        return PropertyResource::collection(Property::with('propertyHistories')->whereId($property->id)->get())->response()->setStatusCode(200);
     }
-
 
     // Lend Property
     public function lendProperty(Request $request, Property $property)
@@ -171,5 +172,79 @@ class PropertyController
     public function lendList()
     {
         return LendPropertyResource::collection(LendProperty::all())->response()->setStatusCode(200);
+    }
+
+    // Maintenance
+
+    public function onMaintenance(Request $request, Property $property)
+    {
+        try {
+            DB::beginTransaction();
+            $on_maintenance = Maintenance::create([
+                'property_id' => $property->id,
+                'property_code' => $property->property_code,
+                'category' => $property->assigned_to,
+                'purchase_date' => $request->purchase_date,
+                'assigned_to' => $request->assigned_to,
+                'location' => $request->location,
+                'has_been_disposed' => false,
+                'has_been_fixed' => false,
+            ]);
+
+            $property->status = 'In Repair';
+            $property->save();
+            DB::commit();
+            return (new LendPropertyResource($on_maintenance))->response()->setStatusCode(201);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
+    }
+
+    public function fixed(Maintenance $maintenance)
+    {
+        try {
+            DB::beginTransaction();
+            $maintenance->has_been_fixed = true;
+            $maintenance->save();
+
+            $property = Property::find($maintenance->property_id)->first();
+            $property->status = 'In Custody';
+            $property->save();
+            DB::commit();
+
+            return (new LendPropertyResource($property))->response()->setStatusCode(201);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
+    }
+
+    public function disposed(Maintenance $maintenance)
+    {
+        try {
+            DB::beginTransaction();
+            $maintenance->has_been_disposed = true;
+            $maintenance->save();
+
+            $property = Property::find($maintenance->property_id)->first();
+            $property->status = 'Disposed';
+            $property->save();
+
+            DB::commit();
+
+            return (new LendPropertyResource($property))->response()->setStatusCode(201);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
+    }
+
+    public function maintenanceList()
+    {
+        return MaintenanceResource::collection(Maintenance::all())->response()->setStatusCode(200);
     }
 }
