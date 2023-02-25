@@ -24,10 +24,13 @@ return new class extends Migration
             $table->string('category');
             $table->string('description');
 
+            $table->boolean('pending_lend')->default(false)->nullable();
+            $table->boolean('init_transfer')->default(false)->nullable();
+
 
             $table->string('assigned_to')->nullable();
             $table->string('location')->nullable();
-            $table->enum('status', ['Unavailable', 'In Custody', 'Disposed', 'In Repair'])->nullable();
+            $table->enum('status', ['Unavailable', 'In Custody', 'Disposed', 'In Repair', ''])->default('')->nullable();
             $table->timestamps();
         });
     }

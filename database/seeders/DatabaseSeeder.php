@@ -30,9 +30,10 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Location::factory(10)->create();
 
         $this->call([
-            ItemStatusSeeder::class,
-            ConsumableSeeder::class,
-            NonConsumableSeeder::class
+            PropertySeeder::class
+            // ItemStatusSeeder::class,
+            // ConsumableSeeder::class,
+            // NonConsumableSeeder::class
             // ExpenseTypeSeeder::class
         ]);
 

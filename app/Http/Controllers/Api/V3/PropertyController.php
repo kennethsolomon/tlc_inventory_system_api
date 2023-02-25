@@ -46,6 +46,10 @@ class PropertyController
                 $fields
             );
 
+            if (!$property->init_transfer) {
+                $property->init_transfer = true;
+            }
+
             DB::commit();
             return (new PropertyResource($property))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
@@ -84,7 +88,7 @@ class PropertyController
 
             $property->assigned_to = $request->assigned_to;
             $property->location = $request->location;
-            $property->status = $request->status;
+            $property->status = 'In Custody';
             $property->save();
 
             $property_history_table = PropertyHistory::wherePropertyId($property->id)->latest()->first();
@@ -122,6 +126,10 @@ class PropertyController
     {
         try {
             DB::beginTransaction();
+
+            $property->pending_lend = true;
+            $property->save();
+
             $lend_property = LendProperty::create([
                 'property_id' => $property->id,
                 'property_code' => $property->property_code,
@@ -151,6 +159,7 @@ class PropertyController
         $property = Property::whereId($lend_property->property_id)->first();
 
         $property->status = 'Unavailable';
+        $property->pending_lend = false;
         $property->save();
 
         return (new PropertyResource($property))->response()->setStatusCode(201);
