@@ -172,7 +172,7 @@ class PropertyController
 
     public function returnProperty(Request $request, LendProperty $lend_property)
     {
-        $lend_property->returned_date = $request->returned_date;
+        $lend_property->returned_date = now();
         $lend_property->save();
 
         $property = Property::whereId($lend_property->property_id)->first();
@@ -181,6 +181,16 @@ class PropertyController
         $property->save();
 
         return (new PropertyResource($property))->response()->setStatusCode(201);
+    }
+
+    public function cancelLend(Request $request, LendProperty $lend_property)
+    {
+        $property = Property::whereId($lend_property->property_id)->first();
+        $property->pending_lend = false;
+        $property->save();
+
+        $lend_property->delete();
+        return true;
     }
 
     public function lendList()
@@ -198,9 +208,9 @@ class PropertyController
                 'property_id' => $property->id,
                 'property_code' => $property->property_code,
                 'category' => $property->assigned_to,
-                'purchase_date' => $request->purchase_date,
-                'assigned_to' => $request->assigned_to,
-                'location' => $request->location,
+                'purchase_date' => $property->purchase_date,
+                'assigned_to' => $property->assigned_to,
+                'location' => $property->location,
                 'has_been_disposed' => false,
                 'has_been_fixed' => false,
             ]);
@@ -208,7 +218,7 @@ class PropertyController
             $property->status = 'In Repair';
             $property->save();
             DB::commit();
-            return (new LendPropertyResource($on_maintenance))->response()->setStatusCode(201);
+            return (new MaintenanceResource($on_maintenance))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
