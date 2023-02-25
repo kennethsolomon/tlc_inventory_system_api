@@ -12,6 +12,7 @@ use App\Models\Log;
 use App\Models\Maintenance;
 use App\Models\Property;
 use App\Models\PropertyHistory;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,10 +46,6 @@ class PropertyController
                 ['id' => $request->id],
                 $fields
             );
-
-            if (!$property->init_transfer) {
-                $property->init_transfer = true;
-            }
 
             DB::commit();
             return (new PropertyResource($property))->response()->setStatusCode(201);
@@ -85,6 +82,10 @@ class PropertyController
     {
         try {
             DB::beginTransaction();
+
+            if (!$property->init_transfer) {
+                $property->init_transfer = true;
+            }
 
             $property->assigned_to = $request->assigned_to;
             $property->location = $request->location;
@@ -126,6 +127,10 @@ class PropertyController
     {
         try {
             DB::beginTransaction();
+
+            if ($property->pending_lend) {
+                throw new Exception("You must take action first for the pending lend property. Before lending the property again.", 500);
+            }
 
             $property->pending_lend = true;
             $property->save();
