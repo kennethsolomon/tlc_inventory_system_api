@@ -3,6 +3,16 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+	Route::get('/user', function (Request $request) {
+		return $request->user();
+	});
+	Route::post("update_account", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
+
+	Route::get("register", [\App\Http\Controllers\AuthController::class, 'register']);
+	Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);
+});
 // V3
 Route::get("properties", [\App\Http\Controllers\Api\V3\PropertyController::class, 'index']);
 Route::post("update_or_create_property", [\App\Http\Controllers\Api\V3\PropertyController::class, 'updateOrCreateProperty']);
