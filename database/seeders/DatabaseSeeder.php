@@ -16,14 +16,24 @@ class DatabaseSeeder extends Seeder
     {
 
         \App\Models\User::factory()->create([
-            'email' => 'admin',
-            'position' => 'DICT ADMIN',
-            'role' => 'Admin',
+            'email' => 'superadmin',
+            'position' => 'Super Admin',
+            'role' => 'Super Admin',
         ]);
         \App\Models\User::factory()->create([
-            'email' => 'staff',
-            'position' => 'DICT STAFF',
-            'role' => 'Staff',
+            'email' => 'administrator',
+            'position' => 'Administrator',
+            'role' => 'Administrator',
+        ]);
+        \App\Models\User::factory()->create([
+            'email' => 'custodian',
+            'position' => 'Property Custodian',
+            'role' => 'Property Custodian',
+        ]);
+        \App\Models\User::factory()->create([
+            'email' => 'maintenance',
+            'position' => 'Maintenance',
+            'role' => 'Maintenance',
         ]);
         // \App\Models\Employee::factory(10)->create();
         // \App\Models\ItemCategory::factory(10)->create();
