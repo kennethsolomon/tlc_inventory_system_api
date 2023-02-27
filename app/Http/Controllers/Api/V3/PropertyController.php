@@ -233,7 +233,7 @@ class PropertyController
             $maintenance->has_been_fixed = true;
             $maintenance->save();
 
-            $property = Property::find($maintenance->property_id)->first();
+            $property = Property::whereId($maintenance->property_id)->first();
             $property->status = 'In Custody';
             $property->save();
             DB::commit();
