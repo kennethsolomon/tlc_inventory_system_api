@@ -138,7 +138,7 @@ class PropertyController
             $lend_property = LendProperty::create([
                 'property_id' => $property->id,
                 'property_code' => $property->property_code,
-                'category' => $property->assigned_to,
+                'category' => $property->category,
                 'date_of_lending' => $request->date_of_lending,
                 'borrower_name' => $request->borrower_name,
                 'location' => $request->location,
