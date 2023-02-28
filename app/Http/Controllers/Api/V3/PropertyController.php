@@ -172,7 +172,7 @@ class PropertyController
 
     public function returnProperty(Request $request, LendProperty $lend_property)
     {
-        $lend_property->returned_date = now();
+        $lend_property->returned_date = now('Asia/Manila');
         $lend_property->save();
 
         $property = Property::whereId($lend_property->property_id)->first();
