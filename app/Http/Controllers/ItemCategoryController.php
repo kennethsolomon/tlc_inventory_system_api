@@ -39,8 +39,8 @@ class ItemCategoryController extends Controller
                 $fields
             );
 
-            $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Item Category with ID ' . $item_category->id . ' has been created/updated.'];
-            Log::create($log);
+            // $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Item Category with ID ' . $item_category->id . ' has been created/updated.'];
+            // Log::create($log);
             DB::commit();
             return (new ItemCategoryResource($item_category))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
@@ -74,8 +74,8 @@ class ItemCategoryController extends Controller
             $item_category->delete();
 
             DB::commit();
-            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Item Category with ' . $item_category->id . ' has been deleted.'];
-            Log::create($log);
+            // $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Item Category with ' . $item_category->id . ' has been deleted.'];
+            // Log::create($log);
 
             return response(null, Response::HTTP_OK);
         } catch (\Throwable $th) {
