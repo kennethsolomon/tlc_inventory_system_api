@@ -207,7 +207,7 @@ class PropertyController
             $on_maintenance = Maintenance::create([
                 'property_id' => $property->id,
                 'property_code' => $property->property_code,
-                'category' => $property->assigned_to,
+                'category' => $property->category,
                 'purchase_date' => $property->purchase_date,
                 'assigned_to' => $property->assigned_to,
                 'location' => $property->location,
