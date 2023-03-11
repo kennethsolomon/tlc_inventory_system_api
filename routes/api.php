@@ -91,3 +91,6 @@ Route::post("lend_property/{non_consumable}", [\App\Http\Controllers\NonConsumab
 Route::post("return_property/{non_consumable_history}", [\App\Http\Controllers\NonConsumableController::class, 'returnProperty']);
 
 Route::get("maintenance", [\App\Http\Controllers\NonConsumableController::class, 'getMaintenance']);
+
+
+// use item category natamag gumawa new controller hahah

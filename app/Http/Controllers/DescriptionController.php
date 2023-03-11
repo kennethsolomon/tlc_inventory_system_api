@@ -2,37 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryPostRequest;
-use App\Http\Requests\ItemCategoryPostRequest;
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\ItemCategoryResource;
-use App\Models\Category;
-use App\Models\ItemCategory;
-use App\Models\Log;
+use App\Http\Requests\DescriptionPostRequest;
+use App\Http\Resources\DescriptionResource;
+use App\Models\Description;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class ItemCategoryController extends Controller
+class DescriptionController extends Controller
 {
     public function index()
     {
-        return CategoryResource::collection(Category::all())->response()->setStatusCode(200);
+        return DescriptionResource::collection(Description::all())->response()->setStatusCode(200);
     }
 
-    public function updateOrCreateCategory(CategoryPostRequest $request)
+    public function updateOrCreateDescription(DescriptionPostRequest $request)
     {
         try {
             DB::beginTransaction();
 
             $fields = $request->validated();
 
-            $item_category = Category::updateOrCreate(
+            $description = Description::updateOrCreate(
                 ['id' => $request->id],
                 $fields
             );
 
             DB::commit();
-            return (new CategoryResource($item_category))->response()->setStatusCode(201);
+            return (new DescriptionResource($description))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
@@ -40,11 +37,11 @@ class ItemCategoryController extends Controller
         }
     }
 
-    public function destroy(Category $category)
+    public function destroy(Description $description)
     {
         try {
             DB::beginTransaction();
-            $category->delete();
+            $description->delete();
 
             DB::commit();
 

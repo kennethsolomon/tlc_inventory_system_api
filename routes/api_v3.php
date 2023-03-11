@@ -37,3 +37,20 @@ Route::get("maintenance_list", [\App\Http\Controllers\Api\V3\PropertyController:
 Route::post("disposed/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'disposed']);
 Route::post("fixed/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'fixed']);
 Route::post("on_maintenance/{property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'onMaintenance']);
+
+Route::get("categories", [\App\Http\Controllers\ItemCategoryController::class, 'index']);
+Route::post("add_category", [\App\Http\Controllers\ItemCategoryController::class, 'updateOrCreateCategory']);
+Route::post("delete_category/{category}", [\App\Http\Controllers\ItemCategoryController::class, 'destroy']);
+
+Route::get("brands", [\App\Http\Controllers\BrandController::class, 'index']);
+Route::post("add_brand", [\App\Http\Controllers\BrandController::class, 'updateOrCreateBrand']);
+Route::post("delete_brand/{brand}", [\App\Http\Controllers\BrandController::class, 'destroy']);
+
+Route::get("models", [\App\Http\Controllers\PropertyModelController::class, 'index']);
+Route::post("add_model", [\App\Http\Controllers\PropertyModelController::class, 'updateOrCreateModel']);
+Route::post("delete_model/{model}", [\App\Http\Controllers\PropertyModelController::class, 'destroy']);
+
+
+Route::get("descriptions", [\App\Http\Controllers\DescriptionController::class, 'index']);
+Route::post("add_description", [\App\Http\Controllers\DescriptionController::class, 'updateOrCreateDescription']);
+Route::post("delete_description/{description}", [\App\Http\Controllers\DescriptionController::class, 'destroy']);

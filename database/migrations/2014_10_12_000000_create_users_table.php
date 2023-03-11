@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('position');
             $table->string('role');
+            $table->boolean('is_borrower')->default(false);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

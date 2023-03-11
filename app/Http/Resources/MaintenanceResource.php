@@ -25,6 +25,8 @@ class MaintenanceResource extends JsonResource
             'location' => $this->location,
             'has_been_disposed' => $this->has_been_disposed,
             'has_been_fixed' => $this->has_been_fixed,
+            'custodian' => $this->custodian,
+            'notes' => $this->notes,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -55,4 +55,8 @@ class User extends Authenticatable
     //         $model->save();
     //     });
     // }
+
+	public function scopeIsBorrower($query) {
+		return $query->whereIsBorrower(true)->get();
+	}
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('lend_properties', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->nullable()->constrained('properties');
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->string('property_code');
             $table->string('category');
             $table->string('date_of_lending');

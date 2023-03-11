@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('purchase_date');
             $table->string('assigned_to');
             $table->string('location');
+            $table->string('notes');
+            $table->string('custodian');
             $table->string('has_been_disposed');
             $table->string('has_been_fixed');
             $table->timestamps();

@@ -17,7 +17,9 @@ class Maintenance extends Model
         'assigned_to',
         'location',
         'has_been_disposed',
-        'has_been_fixed'
+        'has_been_fixed',
+        'custodian',
+        'notes',
     ];
 
     public function property()
