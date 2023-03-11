@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -13,6 +14,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 	Route::get("register", [\App\Http\Controllers\AuthController::class, 'register']);
 	Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);
 });
+
 // V3
 Route::get("properties", [\App\Http\Controllers\Api\V3\PropertyController::class, 'index']);
 Route::post("update_or_create_property", [\App\Http\Controllers\Api\V3\PropertyController::class, 'updateOrCreateProperty']);
@@ -54,3 +56,13 @@ Route::post("delete_model/{model}", [\App\Http\Controllers\PropertyModelControll
 Route::get("descriptions", [\App\Http\Controllers\DescriptionController::class, 'index']);
 Route::post("add_description", [\App\Http\Controllers\DescriptionController::class, 'updateOrCreateDescription']);
 Route::post("delete_description/{description}", [\App\Http\Controllers\DescriptionController::class, 'destroy']);
+
+
+Route::get('users', function (Request $request) {
+	return User::get();
+});
+
+
+Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
+Route::post("add_location", [\App\Http\Controllers\LocationController::class, 'updateOrCreateLocation']);
+Route::post("delete_location/{location}", [\App\Http\Controllers\LocationController::class, 'destroy']);

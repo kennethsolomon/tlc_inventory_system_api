@@ -12,22 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return LocationResource::collection(Location::all())->response()->setStatusCode(200);
     }
 
-    /**
-     * Create or Update the specified resource.
-     *
-     * @param  \App\Http\Requests  $request
-     * @return \Illuminate\Http\Response
-     */
     public function updateOrCreateLocation(LocationPostRequest $request)
     {
         try {
@@ -40,8 +29,6 @@ class LocationController extends Controller
                 $fields
             );
 
-            $log = ['user' => auth()->user()->email, 'action' => 'Create/Update', 'description' => 'Location  with ID ' . $location->id . ' has been created/updated.'];
-            Log::create($log);
             DB::commit();
             return (new LocationResource($location))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
@@ -51,24 +38,6 @@ class LocationController extends Controller
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Location $location)
-    {
-        return (new LocationResource($location))->response()->setStatusCode(202);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Location $location)
     {
         try {
@@ -77,8 +46,6 @@ class LocationController extends Controller
 
             DB::commit();
 
-            $log = ['user' => auth()->user()->email, 'action' => 'Delete', 'description' => 'Location with ' . $location->id . ' has been deleted.'];
-            Log::create($log);
             return response(null, Response::HTTP_OK);
         } catch (\Throwable $th) {
             throw $th;

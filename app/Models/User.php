@@ -46,17 +46,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // public static function boot()
-    // {
-    //     parent::boot();
+    protected $appends = ['fullname'];
 
-    //     static::updated(function ($model) {
-    //         $model->password = Hash::make($model->password);
-    //         $model->save();
-    //     });
-    // }
+    public function getFullnameAttribute()
+    {
+        return $this->firstname . ' ' .  $this->middlename . ' ' . $this->lastname;
+    }
 
-	public function scopeIsBorrower($query) {
-		return $query->whereIsBorrower(true)->get();
-	}
+    public function scopeIsBorrower($query)
+    {
+        return $query->whereIsBorrower(true)->get();
+    }
 }
