@@ -138,7 +138,7 @@ class PropertyController
             $lend_property = LendProperty::create([
                 'property_id' => $property->id,
                 'property_code' => $property->property_code,
-                'category' => $property->assigned_to,
+                'category' => $property->category,
                 'date_of_lending' => $request->date_of_lending,
                 'borrower_name' => $request->borrower_name,
                 'location' => $request->location,
@@ -172,7 +172,7 @@ class PropertyController
 
     public function returnProperty(Request $request, LendProperty $lend_property)
     {
-        $lend_property->returned_date = now();
+        $lend_property->returned_date = now('Asia/Manila');
         $lend_property->save();
 
         $property = Property::whereId($lend_property->property_id)->first();
@@ -207,7 +207,7 @@ class PropertyController
             $on_maintenance = Maintenance::create([
                 'property_id' => $property->id,
                 'property_code' => $property->property_code,
-                'category' => $property->assigned_to,
+                'category' => $property->category,
                 'purchase_date' => $property->purchase_date,
                 'assigned_to' => $property->assigned_to,
                 'location' => $property->location,
