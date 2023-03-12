@@ -20,11 +20,17 @@ class Maintenance extends Model
         'has_been_disposed',
         'has_been_fixed',
         'custodian',
+        'is_approved',
         'notes',
     ];
 
     public function property()
     {
         return $this->belongsTo(Property::class);
+    }
+
+    public function scopeIsApproved($query)
+    {
+        return $query->whereIsApproved(true);
     }
 }

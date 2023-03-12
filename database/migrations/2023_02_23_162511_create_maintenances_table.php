@@ -23,9 +23,10 @@ return new class extends Migration
             $table->string('assigned_to');
             $table->string('location');
             $table->string('notes');
-            $table->string('custodian');
+            $table->string('custodian')->nullable();
             $table->string('has_been_disposed');
             $table->string('has_been_fixed');
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

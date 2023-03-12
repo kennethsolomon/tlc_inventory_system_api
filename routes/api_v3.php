@@ -66,3 +66,6 @@ Route::get('users', function (Request $request) {
 Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
 Route::post("add_location", [\App\Http\Controllers\LocationController::class, 'updateOrCreateLocation']);
 Route::post("delete_location/{location}", [\App\Http\Controllers\LocationController::class, 'destroy']);
+
+
+Route::post("approve/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'approve']);

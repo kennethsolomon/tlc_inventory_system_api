@@ -209,8 +209,9 @@ class PropertyController
                 'property_code' => $property->property_code,
                 'category' => $property->category,
                 'purchase_date' => $property->purchase_date,
+                'warranty_period' => $property->warranty_period,
                 'notes' => $request->notes,
-                'custodian' => $request->custodian,
+                // 'custodian' => $request->custodian,
                 'assigned_to' => $property->assigned_to,
                 'location' => $property->location,
                 'has_been_disposed' => false,
@@ -219,6 +220,7 @@ class PropertyController
 
             $property->status = 'In Repair';
             $property->save();
+
             DB::commit();
             return (new MaintenanceResource($on_maintenance))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
@@ -240,7 +242,27 @@ class PropertyController
             $property->save();
             DB::commit();
 
-            return (new LendPropertyResource($property))->response()->setStatusCode(201);
+            return (new PropertyResource($property))->response()->setStatusCode(201);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
+    }
+    public function approve(Request $request, Maintenance $maintenance)
+    {
+        try {
+            DB::beginTransaction();
+            $maintenance->is_approved = true;
+            $maintenance->custodian = $request->custodian;
+            $maintenance->save();
+
+            $property = Property::whereId($maintenance->property_id)->first();
+            $property->status = 'In Repair';
+            $property->save();
+            DB::commit();
+
+            return (new PropertyResource($property))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
@@ -261,7 +283,7 @@ class PropertyController
 
             DB::commit();
 
-            return (new LendPropertyResource($property))->response()->setStatusCode(201);
+            return (new PropertyResource($property))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
