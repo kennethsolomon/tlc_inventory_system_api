@@ -209,6 +209,8 @@ class PropertyController
                 'property_code' => $property->property_code,
                 'category' => $property->category,
                 'purchase_date' => $property->purchase_date,
+                'notes' => $request->notes,
+                'custodian' => $request->custodian,
                 'assigned_to' => $property->assigned_to,
                 'location' => $property->location,
                 'has_been_disposed' => false,
