@@ -31,9 +31,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'Property Custodian',
         ]);
         \App\Models\User::factory()->create([
-            'email' => 'maintenance',
-            'position' => 'Maintenance',
-            'role' => 'Maintenance',
+            'email' => 'technician',
+            'position' => 'Technician',
+            'role' => 'Technician',
+        ]);
+        \App\Models\User::factory()->create([
+            'email' => 'borrower',
+            'position' => 'Borrower',
+            'role' => 'Borrower',
         ]);
         // \App\Models\Employee::factory(10)->create();
         // \App\Models\ItemCategory::factory(10)->create();

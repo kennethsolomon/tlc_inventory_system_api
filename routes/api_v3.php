@@ -11,6 +11,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 		return $request->user();
 	});
 	Route::post("update-or-create-user", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
+	Route::get("user-borrow-list", [\App\Http\Controllers\AuthController::class, 'userBorrowList']);
 
 	Route::get("register", [\App\Http\Controllers\AuthController::class, 'register']);
 	Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);
@@ -40,6 +41,8 @@ Route::get("maintenance_list", [\App\Http\Controllers\Api\V3\PropertyController:
 Route::post("disposed/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'disposed']);
 Route::post("fixed/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'fixed']);
 Route::post("on_maintenance/{property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'onMaintenance']);
+Route::get("user-maintenance", [\App\Http\Controllers\Api\V3\PropertyController::class, 'userMaintenanceList']);
+
 
 Route::get("categories", [\App\Http\Controllers\ItemCategoryController::class, 'index']);
 Route::post("add_category", [\App\Http\Controllers\ItemCategoryController::class, 'updateOrCreateCategory']);

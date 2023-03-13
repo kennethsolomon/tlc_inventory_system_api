@@ -101,4 +101,9 @@ class AuthController extends Controller
   {
     return User::get();
   }
+
+  function userBorrowList()
+  {
+    return User::whereId(auth()->user()->id)->with('borrows')->first();
+  }
 }

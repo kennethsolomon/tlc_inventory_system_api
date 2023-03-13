@@ -10,6 +10,7 @@ class Maintenance extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'property_id',
         'property_code',
         'category',
@@ -23,6 +24,12 @@ class Maintenance extends Model
         'is_approved',
         'notes',
     ];
+    protected $appends = ['flagged_date'];
+
+    public function getFlaggedDateAttribute()
+    {
+        return $this->updated_at->toDayDateTimeString();
+    }
 
     public function property()
     {

@@ -12,6 +12,7 @@ use App\Models\Log;
 use App\Models\Maintenance;
 use App\Models\Property;
 use App\Models\PropertyHistory;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -161,7 +162,6 @@ class PropertyController
     public function lendApproved(Request $request, LendProperty $lend_property)
     {
         $lend_property->is_lend = true;
-        $lend_property->user_id = $request->id; // Request ID is the borrowers id
         $lend_property->save();
 
         $property = Property::whereId($lend_property->property_id)->first();
@@ -208,6 +208,7 @@ class PropertyController
         try {
             DB::beginTransaction();
             $on_maintenance = Maintenance::create([
+                'user_id' => auth()->user()->id,
                 'property_id' => $property->id,
                 'property_code' => $property->property_code,
                 'category' => $property->category,
@@ -297,5 +298,10 @@ class PropertyController
     public function maintenanceList()
     {
         return MaintenanceResource::collection(Maintenance::all())->response()->setStatusCode(200);
+    }
+
+    public function userMaintenanceList()
+    {
+        return User::whereId(auth()->user()->id)->with('maintenances')->first();
     }
 }

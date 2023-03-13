@@ -59,4 +59,14 @@ class User extends Authenticatable
     {
         return $query->whereIsBorrower(true)->get();
     }
+
+    public function borrows()
+    {
+        return $this->hasMany(LendProperty::class);
+    }
+
+    public function maintenances()
+    {
+        return $this->hasMany(Maintenance::class);
+    }
 }
