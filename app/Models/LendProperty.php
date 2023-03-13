@@ -19,6 +19,7 @@ class LendProperty extends Model
         'location',
         'reason_for_lending',
         'is_lend',
+        'user_id',
         'returned_date'
     ];
 }

@@ -7,7 +7,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::post("update_account", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
+    // Route::post("update_account", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
 
     Route::get("register", [\App\Http\Controllers\AuthController::class, 'register']);
     Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);

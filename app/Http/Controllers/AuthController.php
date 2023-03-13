@@ -21,10 +21,11 @@ class AuthController extends Controller
       DB::beginTransaction();
 
       $fields = $request->validated();
+      $fields['password'] = Hash::make($request->password);
 
       $user = User::updateOrCreate(
         ['id' => $request->id],
-        $fields + ['password' => Hash::make($request->password)]
+        $fields
       );
 
       DB::commit();
@@ -79,5 +80,25 @@ class AuthController extends Controller
     // $log = ['user' => auth()->user()->email, 'action' => 'Logged Out', 'description' => 'User has logged out successfully.'];
     // Log::create($log);
     return response()->json(null, 200);
+  }
+
+  function deleteUser(User $user)
+  {
+    try {
+      DB::beginTransaction();
+      $user->delete();
+      DB::commit();
+
+      return response(null, Response::HTTP_OK);
+    } catch (\Throwable $th) {
+      throw $th;
+      DB::rollBack();
+      return response(null, Response::HTTP_NOT_IMPLEMENTED);
+    }
+  }
+
+  function index()
+  {
+    return User::get();
   }
 }

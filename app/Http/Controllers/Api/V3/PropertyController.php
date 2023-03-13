@@ -125,6 +125,7 @@ class PropertyController
     // Lend Property
     public function lendProperty(Request $request, Property $property)
     {
+        info($request->all());
         try {
             DB::beginTransaction();
 
@@ -140,7 +141,8 @@ class PropertyController
                 'property_code' => $property->property_code,
                 'category' => $property->category,
                 'date_of_lending' => $request->date_of_lending,
-                'borrower_name' => $request->borrower_name,
+                'borrower_name' => $request->borrower['fullname'],
+                'user_id' => $request->borrower['id'],
                 'location' => $request->location,
                 'reason_for_lending' => $request->reason_for_lending,
                 'is_lend' => false,
@@ -156,9 +158,10 @@ class PropertyController
         }
     }
 
-    public function lendApproved(LendProperty $lend_property)
+    public function lendApproved(Request $request, LendProperty $lend_property)
     {
         $lend_property->is_lend = true;
+        $lend_property->user_id = $request->id; // Request ID is the borrowers id
         $lend_property->save();
 
         $property = Property::whereId($lend_property->property_id)->first();

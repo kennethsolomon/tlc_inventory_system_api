@@ -3,13 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
-
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 	Route::get('/user', function (Request $request) {
 		return $request->user();
 	});
-	Route::post("update_account", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
+	Route::post("update-or-create-user", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
 
 	Route::get("register", [\App\Http\Controllers\AuthController::class, 'register']);
 	Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);
@@ -58,10 +59,8 @@ Route::post("add_description", [\App\Http\Controllers\DescriptionController::cla
 Route::post("delete_description/{description}", [\App\Http\Controllers\DescriptionController::class, 'destroy']);
 
 
-Route::get('users', function (Request $request) {
-	return User::get();
-});
-
+Route::get("users", [\App\Http\Controllers\AuthController::class, 'index']);
+Route::post("delete-user/{user}", [\App\Http\Controllers\AuthController::class, 'deleteUser']);
 
 Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
 Route::post("add_location", [\App\Http\Controllers\LocationController::class, 'updateOrCreateLocation']);

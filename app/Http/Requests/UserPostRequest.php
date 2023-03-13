@@ -24,11 +24,14 @@ class UserPostRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => 'sometimes|integer',
             'firstname' => 'required|string',
             'middlename' => 'nullable',
             'lastname' => 'required|string',
             'position' => 'required|string',
             'email' => 'required|string',
+            'password' => 'required|confirmed|string',
+            'role' => 'required|string',
         ];
     }
 }
