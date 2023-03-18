@@ -6,18 +6,36 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+// Route::group(['middleware' => 'auth:sanctum'], function () {
+// 	Route::get('/user', function (Request $request) {
+// 		return $request->user();
+// 	});
+
+// 	Route::get("register", [\App\Http\Controllers\AuthController::class, 'register']);
+// 	Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);
+// });
+
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'auth'
+
+], function ($router) {
+
+	Route::post("login", [\App\Http\Controllers\AuthController::class, 'login']);
+	Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);
+	Route::post("refresh", [\App\Http\Controllers\AuthController::class, 'refresh']);
+	Route::post("me", [\App\Http\Controllers\AuthController::class, 'me']);
+
 	Route::get('/user', function (Request $request) {
 		return $request->user();
 	});
-	Route::post("update-or-create-user", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
-	Route::get("user-borrow-list", [\App\Http\Controllers\AuthController::class, 'userBorrowList']);
-
-	Route::get("register", [\App\Http\Controllers\AuthController::class, 'register']);
-	Route::post("logout", [\App\Http\Controllers\AuthController::class, 'logout']);
 });
 
 // V3
+
+Route::get("user-borrow-list", [\App\Http\Controllers\AuthController::class, 'userBorrowList']);
+Route::post("update-or-create-user", [\App\Http\Controllers\AuthController::class, 'updateOrCreateUser']);
+
 Route::get("properties", [\App\Http\Controllers\Api\V3\PropertyController::class, 'index']);
 Route::post("update_or_create_property", [\App\Http\Controllers\Api\V3\PropertyController::class, 'updateOrCreateProperty']);
 Route::delete("delete_property/{property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'destroy']);
@@ -65,9 +83,10 @@ Route::post("delete_description/{description}", [\App\Http\Controllers\Descripti
 Route::get("users", [\App\Http\Controllers\AuthController::class, 'index']);
 Route::post("delete-user/{user}", [\App\Http\Controllers\AuthController::class, 'deleteUser']);
 
-Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
 Route::post("add_location", [\App\Http\Controllers\LocationController::class, 'updateOrCreateLocation']);
 Route::post("delete_location/{location}", [\App\Http\Controllers\LocationController::class, 'destroy']);
 
 
 Route::post("approve/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'approve']);
+
+Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
