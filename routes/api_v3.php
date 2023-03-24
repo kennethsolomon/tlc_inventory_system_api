@@ -42,7 +42,7 @@ Route::delete("delete_property/{property}", [\App\Http\Controllers\Api\V3\Proper
 
 
 
-Route::post("transfer_property/{property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'transferProperty']);
+Route::post("transfer_property", [\App\Http\Controllers\Api\V3\PropertyController::class, 'transferProperty']);
 Route::get("property_history/{property}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'propertyHistory']);
 
 

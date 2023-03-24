@@ -79,38 +79,44 @@ class PropertyController
     }
 
     // Transfer Property
-    public function transferProperty(Request $request, Property $property)
+    public function transferProperty(Request $request)
     {
         try {
             DB::beginTransaction();
+            $count = 0;
+            foreach ($request->selected as $selected_property) {
+                info(__METHOD__ . ' : ' . $selected_property['id']);
+                $data = [
+                    'assigned_to' => $request->data['assigned_to'],
+                    'init_transfer' => true,
+                    'location' => $request->data['location'],
+                    'status' => 'In Custody',
+                ];
 
-            if (!$property->init_transfer) {
-                $property->init_transfer = true;
+                Property::updateOrCreate(
+                    ['id' => $selected_property['id']],
+                    $data
+                );
+
+                $property_history_table = PropertyHistory::wherePropertyId($selected_property['id'])->latest()->first();
+
+                if ($property_history_table) {
+                    $property_history_table->status = 'Out of Custody';
+                    $property_history_table->save();
+                };
+
+                $property_history = PropertyHistory::create([
+                    'property_id' => $selected_property['id'],
+                    'transfer_date' => $request->data['transfer_date'],
+                    'assigned_to' => $request->data['assigned_to'],
+                    'location' => $request->data['location'],
+                    'status' => 'In Custody'
+                ]);
+                $count++;
             }
 
-            $property->assigned_to = $request->assigned_to;
-            $property->location = $request->location;
-            $property->status = 'In Custody';
-            $property->save();
-
-            $property_history_table = PropertyHistory::wherePropertyId($property->id)->latest()->first();
-
-            if ($property_history_table) {
-                $property_history_table->status = 'Out of Custody';
-                $property_history_table->save();
-            };
-
-            $property_history = PropertyHistory::create([
-                'property_id' => $property->id,
-                'transfer_date' => $request->transfer_date,
-                'assigned_to' => $request->assigned_to,
-                'location' => $request->location,
-                'status' => 'In Custody'
-            ]);
-
-
             DB::commit();
-            return (new PropertyHistoryResource($property_history))->response()->setStatusCode(201);
+            return response($count . ' property has been transfered successfully.')->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
