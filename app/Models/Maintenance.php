@@ -15,7 +15,7 @@ class Maintenance extends Model
         'property_code',
         'category',
         'purchase_date',
-        'warranty_period',
+        // 'warranty_period',
         'assigned_to',
         'location',
         'has_been_disposed',

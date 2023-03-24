@@ -19,7 +19,7 @@ class PropertyResource extends JsonResource
             'property_code' => $this->property_code,
             'serial_number' => $this->serial_number,
             'purchase_date' => $this->purchase_date,
-            'warranty_period' => $this->warranty_period,
+            // 'warranty_period' => $this->warranty_period,
             'brand' => $this->brand,
             'model' => $this->model,
             'category' => $this->category,

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('property_code');
             $table->string('serial_number');
             $table->string('purchase_date');
-            $table->string('warranty_period');
+            // $table->string('warranty_period');
             $table->string('brand');
             $table->string('model');
             $table->string('category');

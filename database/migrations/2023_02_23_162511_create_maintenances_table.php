@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('property_code');
             $table->string('category');
             $table->string('purchase_date');
-            $table->string('warranty_period');
+            // $table->string('warranty_period');
             $table->string('assigned_to');
             $table->string('location');
             $table->string('notes');

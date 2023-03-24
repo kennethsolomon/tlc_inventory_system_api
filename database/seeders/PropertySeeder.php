@@ -24,7 +24,7 @@ class PropertySeeder extends Seeder
                 'description' => 'Maroon Bezel, 20 Inch',
                 'serial_number' => 'Maroon Bezel, 20 Inch',
                 'purchase_date' => '11/11/2023',
-                'warranty_period' => '12 Months',
+                // 'warranty_period' => '12 Months',
             ],
         ];
         Property::upsert($property, []);

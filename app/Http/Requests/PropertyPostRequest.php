@@ -27,7 +27,7 @@ class PropertyPostRequest extends FormRequest
             'property_code' => 'required|string',
             'serial_number' => 'required|string',
             'purchase_date' => 'required|string',
-            'warranty_period' => 'required|string',
+            // 'warranty_period' => 'required|string',
             'brand' => 'required|string',
             'model' => 'required|string',
             'category' => 'required|string',

@@ -13,7 +13,7 @@ class Property extends Model
         'property_code',
         'serial_number',
         'purchase_date',
-        'warranty_period',
+        // 'warranty_period',
         'brand',
         'model',
         'category',

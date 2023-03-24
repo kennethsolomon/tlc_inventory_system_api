@@ -22,7 +22,7 @@ class MaintenanceResource extends JsonResource
             'category' => $this->category,
             'category' => $this->category,
             'purchase_date' => $this->purchase_date,
-            'warranty_period' => $this->warranty_period,
+            // 'warranty_period' => $this->warranty_period,
             'assigned_to' => $this->assigned_to,
             'location' => $this->location,
             'has_been_disposed' => $this->has_been_disposed,

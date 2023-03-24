@@ -219,7 +219,7 @@ class PropertyController
                 'property_code' => $property->property_code,
                 'category' => $property->category,
                 'purchase_date' => $property->purchase_date,
-                'warranty_period' => $property->warranty_period,
+                // 'warranty_period' => $property->warranty_period,
                 'notes' => $request->notes,
                 // 'custodian' => $request->custodian,
                 'assigned_to' => $property->assigned_to,
