@@ -130,34 +130,43 @@ class PropertyController
     }
 
     // Lend Property
-    public function lendProperty(Request $request, Property $property)
+    public function lendProperty(Request $request)
     {
-        info($request->all());
         try {
             DB::beginTransaction();
 
-            if ($property->pending_lend) {
-                throw new Exception("You must take action first for the pending lend property. Before lending the property again.", 500);
+            $count = 0;
+            foreach ($request->selected as $selected_property) {
+
+                $property = Property::find($selected_property['id']);
+
+                if ($property->pending_lend) {
+                    throw new Exception("You must take action first for the pending lend property " . $selected_property['property_code'] . ". Before lending the property again.", 500);
+                }
+
+                info(__METHOD__ . ' : ' . $selected_property['id']);
+                $property->pending_lend = true;
+                $property->save();
+
+                $lend_property = LendProperty::create([
+                    'property_id' => $selected_property['id'],
+                    'property_code' => $selected_property['property_code'],
+                    'category' => $selected_property['category'],
+                    'date_of_lending' => $request->data['date_of_lending'],
+                    'return_date' => $request->data['return_date'],
+                    'borrower_name' => $request->data['borrower']['fullname'],
+                    'user_id' => $request->data['borrower']['id'],
+                    'location' => $request->data['location'],
+                    'reason_for_lending' => $request->data['reason_for_lending'],
+                    'is_lend' => false,
+                    'returned_date' => null
+                ]);
+
+                $count++;
             }
 
-            $property->pending_lend = true;
-            $property->save();
-
-            $lend_property = LendProperty::create([
-                'property_id' => $property->id,
-                'property_code' => $property->property_code,
-                'category' => $property->category,
-                'date_of_lending' => $request->date_of_lending,
-                'borrower_name' => $request->borrower['fullname'],
-                'user_id' => $request->borrower['id'],
-                'location' => $request->location,
-                'reason_for_lending' => $request->reason_for_lending,
-                'is_lend' => false,
-                'returned_date' => null
-            ]);
-
             DB::commit();
-            return (new LendPropertyResource($lend_property))->response()->setStatusCode(201);
+            return response($count . ' property has been transfered successfully.')->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();

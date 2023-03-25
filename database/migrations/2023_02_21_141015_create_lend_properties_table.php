@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('property_code');
             $table->string('category');
             $table->string('date_of_lending');
+            $table->string('return_date');
             $table->string('borrower_name');
             $table->string('location');
             $table->string('reason_for_lending');
