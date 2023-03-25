@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('category');
             $table->string('description');
 
+            $table->string('maintenance')->nullable();
+            $table->string('maintenance_description')->nullable();
+
             $table->boolean('pending_lend')->default(false)->nullable();
             $table->boolean('init_transfer')->default(false)->nullable();
 

@@ -21,7 +21,9 @@ class Property extends Model
         'assigned_to',
         'location',
         'status',
-        'init_transfer'
+        'init_transfer',
+        'maintenance',
+        'maintenance_description',
     ];
 
 

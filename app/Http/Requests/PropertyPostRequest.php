@@ -32,6 +32,8 @@ class PropertyPostRequest extends FormRequest
             'model' => 'required|string',
             'category' => 'required|string',
             'description' => 'required|string',
+            'maintenance' => 'required|string',
+            'maintenance_description' => 'required|string',
 
             'assigned_to' => 'nullable|string',
             'location' => 'nullable|string',

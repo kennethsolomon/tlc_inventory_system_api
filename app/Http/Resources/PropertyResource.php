@@ -27,6 +27,8 @@ class PropertyResource extends JsonResource
             'assigned_to' => $this->assigned_to,
             'location' => $this->location,
             'status' => $this->status,
+            'maintenance' => $this->maintenance,
+            'maintenance_description' => $this->maintenance_description,
             'pending_lend' => $this->pending_lend,
             'init_transfer' => $this->init_transfer,
             'property_histories' => PropertyHistoryResource::collection($this->whenLoaded('propertyHistories')), // when has eager loading you can use this code to load the relationship
