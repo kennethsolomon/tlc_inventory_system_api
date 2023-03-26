@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('reason_for_lending');
             $table->string('is_lend')->nullable();
             $table->string('returned_date')->nullable();
+            $table->boolean('is_overdue')->default(false);
             $table->timestamps();
         });
     }

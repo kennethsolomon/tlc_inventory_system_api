@@ -30,7 +30,10 @@ class MaintenanceResource extends JsonResource
             'custodian' => $this->custodian,
             'is_approved' => $this->is_approved,
             'notes' => $this->notes,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
             'flagged_date' => $this->flagged_date,
+            'description' => $this->description,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

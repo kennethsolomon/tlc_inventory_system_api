@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\MaintenanceService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/test', function () {
+
+    // $MaintenanceService = MaintenanceService::getInstance();
+
+    // $MaintenanceService->handleMaintenance('2023-03-25', 'Biennial');
 });

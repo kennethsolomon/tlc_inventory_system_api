@@ -23,6 +23,10 @@ class Maintenance extends Model
         'custodian',
         'is_approved',
         'notes',
+        'start_date',
+        'end_date',
+        'frequency',
+        'description',
     ];
     protected $appends = ['flagged_date'];
 

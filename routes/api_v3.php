@@ -90,3 +90,5 @@ Route::post("delete_location/{location}", [\App\Http\Controllers\LocationControl
 Route::post("approve/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'approve']);
 
 Route::get("locations", [\App\Http\Controllers\LocationController::class, 'index']);
+
+Route::post("change-status/{maintenance}", [\App\Http\Controllers\Api\V3\PropertyController::class, 'changeMaintenanceStatus']);

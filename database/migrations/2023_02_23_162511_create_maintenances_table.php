@@ -17,17 +17,22 @@ return new class extends Migration
             $table->id();
             $table->foreignId('property_id')->nullable()->constrained('properties');
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->string('property_code');
-            $table->string('category');
-            $table->string('purchase_date');
+            $table->string('property_code')->nullable();
+            $table->string('category')->nullable();
+            $table->string('purchase_date')->nullable();
             // $table->string('warranty_period');
-            $table->string('assigned_to');
-            $table->string('location');
-            $table->string('notes');
+            $table->string('assigned_to')->nullable();
+            $table->string('location')->nullable();
+            $table->string('notes')->nullable();
             $table->string('custodian')->nullable();
-            $table->string('has_been_disposed');
-            $table->string('has_been_fixed');
+            $table->string('has_been_disposed')->nullable();
+            $table->string('has_been_fixed')->default(false)->nullable();
             $table->boolean('is_approved')->default(false);
+
+            $table->string('start_date')->nullable();
+            $table->string('end_date')->nullable();
+            $table->string('frequency')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

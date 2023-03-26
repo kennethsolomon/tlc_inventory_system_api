@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('property:overdue')->dailyAt('01:30');;
+        $schedule->command('maintenance:frequency')->dailyAt('02:00');;
     }
 
     /**

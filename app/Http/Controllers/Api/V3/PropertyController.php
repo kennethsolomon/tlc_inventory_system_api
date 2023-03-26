@@ -13,6 +13,8 @@ use App\Models\Maintenance;
 use App\Models\Property;
 use App\Models\PropertyHistory;
 use App\Models\User;
+use App\Services\MaintenanceService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,16 +41,72 @@ class PropertyController
     public function updateOrCreateProperty(PropertyPostRequest $request)
     {
         try {
-
             DB::beginTransaction();
+
             $fields = $request->validated();
 
+            info('Creating a Property');
             $property = Property::updateOrCreate(
                 ['id' => $request->id],
                 $fields
             );
 
+            $MaintenanceService = MaintenanceService::getInstance();
+            if (!$request->id) {
+                switch ($request->maintenance) {
+                    case 'Quarterly':
+                        info('Creating a quarterly maintenance');
+                        $start_date = $MaintenanceService->getFrequencyDate(Carbon::now()->format('Y-m-d'), 'Quarterly');
+                        Maintenance::create([
+                            'property_id' => $property->id,
+                            'property_code' => $property->property_code,
+                            'category' => $property->property_code,
+                            'start_date' => $start_date,
+                            'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                            'description' => $property->description,
+                            'notes' => $property->maintenance_description,
+                            'frequency' => 'Quarterly',
+                        ]);
+                        break;
+                    case 'Yearly':
+                        info('Creating a yearly maintenance');
+                        $start_date = $MaintenanceService->getFrequencyDate(Carbon::now()->format('Y-m-d'), 'Yearly');
+                        Maintenance::create([
+                            'property_id' => $property->id,
+                            'property_code' => $property->property_code,
+                            'category' => $property->property_code,
+                            'start_date' => $start_date,
+                            'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                            'description' => $property->description,
+                            'notes' => $property->maintenance_description,
+                            'frequency' => 'Yearly',
+                        ]);
+                        break;
+                    case 'Biennial':
+                        info('Creating a biennial maintenance');
+                        $start_date = $MaintenanceService->getFrequencyDate(Carbon::now()->format('Y-m-d'), 'Biennial');
+                        Maintenance::create([
+                            'property_id' => $property->id,
+                            'property_code' => $property->property_code,
+                            'category' => $property->property_code,
+                            'start_date' => $start_date,
+                            'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                            'description' => $property->description,
+                            'notes' => $property->maintenance_description,
+                            'frequency' => 'Biennial',
+                        ]);
+                    default:
+                        break;
+                }
+            } else {
+                info('Updating a maintenance frequency');
+                $maintenance = Maintenance::where('property_id', $property->id)->latest()->first();
+                $maintenance->frequency = $request->maintenance;
+                $maintenance->save();
+            }
+
             DB::commit();
+            info('Successfully finished creating a Property with Maintenance Data with Property Code: ' . $property->property_code);
             return (new PropertyResource($property))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
@@ -138,29 +196,36 @@ class PropertyController
             $count = 0;
             foreach ($request->selected as $selected_property) {
 
-                $property = Property::find($selected_property['id']);
+                $lend_property = LendProperty::whereUserId($request->data['borrower']['id'])
+                    ->wherePropertyId($selected_property['id'])
+                    ->whereIsLend(false)->get();
 
-                if ($property->pending_lend) {
-                    throw new Exception("You must take action first for the pending lend property " . $selected_property['property_code'] . ". Before lending the property again.", 500);
+                if ($lend_property->count() > 0) {
+                    throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is already in pending. Please take actions before lending the property again.", 500);
                 }
 
-                info(__METHOD__ . ' : ' . $selected_property['id']);
-                $property->pending_lend = true;
-                $property->save();
+                $property = Property::find($selected_property['id']);
+                if ($property) {
+                    $property->pending_lend = true;
+                    $property->save();
+                }
 
-                $lend_property = LendProperty::create([
-                    'property_id' => $selected_property['id'],
-                    'property_code' => $selected_property['property_code'],
-                    'category' => $selected_property['category'],
-                    'date_of_lending' => $request->data['date_of_lending'],
-                    'return_date' => $request->data['return_date'],
-                    'borrower_name' => $request->data['borrower']['fullname'],
-                    'user_id' => $request->data['borrower']['id'],
-                    'location' => $request->data['location'],
-                    'reason_for_lending' => $request->data['reason_for_lending'],
-                    'is_lend' => false,
-                    'returned_date' => null
-                ]);
+
+                LendProperty::create(
+                    [
+                        'property_id' => $selected_property['id'],
+                        'property_code' => $selected_property['property_code'],
+                        'category' => $selected_property['category'],
+                        'date_of_lending' => $request->data['date_of_lending'],
+                        'return_date' => $request->data['return_date'],
+                        'borrower_name' => $request->data['borrower']['fullname'],
+                        'user_id' => $request->data['borrower']['id'],
+                        'location' => $request->data['location'],
+                        'reason_for_lending' => $request->data['reason_for_lending'],
+                        'is_lend' => false,
+                        'returned_date' => null
+                    ]
+                );
 
                 $count++;
             }
@@ -181,9 +246,12 @@ class PropertyController
 
         $property = Property::whereId($lend_property->property_id)->first();
 
-        $property->status = 'Unavailable';
+        $property->status = 'In Custody';
         $property->pending_lend = false;
+        $property->location = $lend_property->location;
         $property->save();
+
+        $delete_pending = LendProperty::where('property_id', $lend_property->property_id)->where('is_lend', false)->delete();
 
         return (new PropertyResource($property))->response()->setStatusCode(201);
     }
@@ -195,7 +263,7 @@ class PropertyController
 
         $property = Property::whereId($lend_property->property_id)->first();
 
-        $property->status = 'In Custody';
+        $property->status = 'On Stock';
         $property->save();
 
         return (new PropertyResource($property))->response()->setStatusCode(201);
@@ -318,5 +386,12 @@ class PropertyController
     public function userMaintenanceList()
     {
         return User::whereId(auth()->user()->id)->with('maintenances')->first();
+    }
+    public function changeMaintenanceStatus(Request $request, Maintenance $maintenance)
+    {
+        $status = $request->has_been_fixed ? 'Done' : 'Pending';
+        info('Changing Property Maintenance Status for ' . $maintenance->property_code . ' to ' . $status . '');
+        $maintenance->has_been_fixed = $request->has_been_fixed;
+        $maintenance->save();
     }
 }
