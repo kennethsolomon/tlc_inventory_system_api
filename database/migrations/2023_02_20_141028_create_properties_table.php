@@ -33,7 +33,7 @@ return new class extends Migration
 
             $table->string('assigned_to')->nullable();
             $table->string('location')->nullable();
-            $table->enum('status', ['Unavailable', 'On Stock',  'In Custody', 'Disposed', 'In Repair', ''])->default('On Stock')->nullable();
+            $table->enum('status', ['Unavailable', 'On Stock',  'In Custody', 'Disposed', 'In Repair', 'Damaged', ''])->default('On Stock')->nullable();
             $table->timestamps();
         });
     }

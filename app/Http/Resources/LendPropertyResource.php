@@ -25,6 +25,7 @@ class LendPropertyResource extends JsonResource
             'location' => $this->location,
             'reason_for_lending' => $this->reason_for_lending,
             'is_lend' => $this->is_lend,
+            'is_overdue' => $this->is_overdue,
             'returned_date' => $this->returned_date,
             'return_date' => $this->return_date,
             'created_at' => $this->created_at,

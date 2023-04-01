@@ -135,6 +135,39 @@ class PropertyController
             return response(null, Response::HTTP_NOT_IMPLEMENTED);
         }
     }
+    // Damage
+    public function setDamageProperty(Request $request)
+    {
+        info($request->selected);
+        try {
+            DB::beginTransaction();
+            $count = 0;
+            foreach ($request->selected as $selected_property) {
+                info(__METHOD__ . ' : ' . $selected_property['id']);
+
+                if ($selected_property['status'] == 'Damaged' || $selected_property['status'] != 'On Stock') {
+                    throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is a damaged property.", 500);
+                }
+
+                $data = [
+                    'status' => 'Damaged',
+                ];
+
+                Property::updateOrCreate(
+                    ['id' => $selected_property['id']],
+                    $data
+                );
+                $count++;
+            }
+
+            DB::commit();
+            return response($count . ' property has been successfully tag as damaged.')->setStatusCode(201);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
+    }
 
     // Transfer Property
     public function transferProperty(Request $request)
@@ -144,6 +177,11 @@ class PropertyController
             $count = 0;
             foreach ($request->selected as $selected_property) {
                 info(__METHOD__ . ' : ' . $selected_property['id']);
+
+                if ($selected_property['status'] == 'Damaged' || $selected_property['status'] != 'On Stock') {
+                    throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is a damaged property.", 500);
+                }
+
                 $data = [
                     'assigned_to' => $request->data['assigned_to'],
                     'init_transfer' => true,
@@ -196,6 +234,10 @@ class PropertyController
             $count = 0;
             foreach ($request->selected as $selected_property) {
 
+                if ($selected_property['status'] == 'Damaged' || $selected_property['status'] != 'On Stock') {
+                    throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is a damaged property.", 500);
+                }
+
                 $lend_property = LendProperty::whereUserId($request->data['borrower']['id'])
                     ->wherePropertyId($selected_property['id'])
                     ->whereIsLend(false)->get();
@@ -209,7 +251,6 @@ class PropertyController
                     $property->pending_lend = true;
                     $property->save();
                 }
-
 
                 LendProperty::create(
                     [
