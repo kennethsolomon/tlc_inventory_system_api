@@ -281,8 +281,11 @@ class PropertyController
             $maintenance->has_been_disposed = true;
             $maintenance->save();
 
-            $property = Property::find($maintenance->property_id)->first();
+            $property = Property::whereId($maintenance->property_id)->first();
             $property->status = 'Disposed';
+            
+            info('Property');
+            info($property);
             $property->save();
 
             DB::commit();
