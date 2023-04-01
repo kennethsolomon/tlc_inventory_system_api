@@ -25,6 +25,7 @@ class Property extends Model
         'init_transfer',
         'maintenance',
         'maintenance_description',
+        'reason_for_lending',
     ];
 
 

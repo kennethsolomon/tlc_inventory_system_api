@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('purchase_date');
             // $table->string('warranty_period');
             $table->string('brand');
+            $table->string('reason_for_lending')->nullable();
             $table->integer('unit_cost');
             $table->string('model');
             $table->string('category');

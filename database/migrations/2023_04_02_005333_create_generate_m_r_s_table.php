@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('generate_m_r_s', function (Blueprint $table) {
             $table->id();
-            $table->json('selected');
+            $table->longText('selected');
             $table->string('type');
             $table->timestamps();
         });

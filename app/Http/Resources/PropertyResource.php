@@ -28,6 +28,7 @@ class PropertyResource extends JsonResource
             'assigned_to' => $this->assigned_to,
             'location' => $this->location,
             'status' => $this->status,
+            'reason_for_lending' => $this->reason_for_lending,
             'maintenance' => $this->maintenance,
             'maintenance_description' => $this->maintenance_description,
             'pending_lend' => $this->pending_lend,

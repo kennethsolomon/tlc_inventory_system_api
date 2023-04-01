@@ -39,6 +39,7 @@ class PropertyPostRequest extends FormRequest
             'assigned_to' => 'nullable|string',
             'location' => 'nullable|string',
             'status' => 'nullable|string',
+            'reason_for_lending' => 'nullable|string',
         ];
     }
 }

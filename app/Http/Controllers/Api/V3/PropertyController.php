@@ -184,7 +184,7 @@ class PropertyController
 
             $generate_mr = GenerateMR::create([
                 'type' => 'transfer',
-                'selected' => $request->selected,
+                'selected' => json_encode($request->selected),
             ]);
 
             info('Generate MR with ID ' . $generate_mr->id);
@@ -204,11 +204,13 @@ class PropertyController
                     throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is not available.", 500);
                 }
 
+                info($request->data);
                 $data = [
                     'assigned_to' => $request->data['assigned_to'],
                     'init_transfer' => true,
                     'location' => $request->data['location'],
                     'status' => 'In Custody',
+                    'reason_for_lending' => $request->data['reason_for_lending'],
                 ];
 
                 Property::updateOrCreate(
@@ -316,7 +318,7 @@ class PropertyController
 
             $generate_mr = GenerateMR::create([
                 'type' => 'lend',
-                'selected' => $request->selected,
+                'selected' => json_encode($request->selected),
             ]);
 
             info('Generate MR with ID ' . $generate_mr->id);
@@ -537,14 +539,18 @@ class PropertyController
 
     public function resignOwner(Request $request, Property $property)
     {
-        $property->init_transfer = false;
-        $property->assigned_to = null;
-        $property->location = null;
-        $property->status = 'On Stock';
-        $property->save();
+        if ($property->assigned_to) {
+            $property->init_transfer = false;
+            $property->assigned_to = null;
+            $property->location = null;
+            $property->status = 'On Stock';
+            $property->save();
 
-        $property_history_table = PropertyHistory::wherePropertyId($property->id)->latest()->first();
-        $property_history_table->status = 'Out of Custody';
-        $property_history_table->save();
+            $property_history_table = PropertyHistory::wherePropertyId($property->id)->latest()->first();
+            $property_history_table->status = 'Out of Custody';
+            $property_history_table->save();
+        } else {
+            throw new Exception("Property needs to be transferred.", 500);
+        }
     }
 }
