@@ -13,6 +13,8 @@ class LendProperty extends Model
         'property_id',
         'property_code',
         'category',
+        'description',
+        'unit_cost',
         'date_of_lending',
         'borrower_id',
         'borrower_name',

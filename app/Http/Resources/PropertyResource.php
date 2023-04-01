@@ -21,6 +21,7 @@ class PropertyResource extends JsonResource
             'purchase_date' => $this->purchase_date,
             // 'warranty_period' => $this->warranty_period,
             'brand' => $this->brand,
+            'unit_cost' => $this->unit_cost,
             'model' => $this->model,
             'category' => $this->category,
             'description' => $this->description,

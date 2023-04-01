@@ -29,6 +29,7 @@ class PropertyPostRequest extends FormRequest
             'purchase_date' => 'required|string',
             // 'warranty_period' => 'required|string',
             'brand' => 'required|string',
+            'unit_cost' => 'required|integer',
             'model' => 'required|string',
             'category' => 'required|string',
             'description' => 'required|string',

@@ -7,6 +7,7 @@ use App\Http\Resources\LendPropertyResource;
 use App\Http\Resources\MaintenanceResource;
 use App\Http\Resources\PropertyHistoryResource;
 use App\Http\Resources\PropertyResource;
+use App\Models\GenerateMR;
 use App\Models\LendProperty;
 use App\Models\Log;
 use App\Models\Maintenance;
@@ -138,6 +139,9 @@ class PropertyController
     // Damage
     public function setDamageProperty(Request $request)
     {
+        if (count($request->selected) <= 0) {
+            throw new Exception('No Selected Property.');
+        }
         info($request->selected);
         try {
             DB::beginTransaction();
@@ -172,14 +176,32 @@ class PropertyController
     // Transfer Property
     public function transferProperty(Request $request)
     {
+        if (count($request->selected) <= 0) {
+            throw new Exception('No Selected Property.');
+        }
         try {
             DB::beginTransaction();
+
+            $generate_mr = GenerateMR::create([
+                'type' => 'transfer',
+                'selected' => $request->selected,
+            ]);
+
+            info('Generate MR with ID ' . $generate_mr->id);
+
+            if (!$generate_mr) {
+                throw new Exception('Failed to generate MR.');
+            }
+
             $count = 0;
             foreach ($request->selected as $selected_property) {
                 info(__METHOD__ . ' : ' . $selected_property['id']);
 
-                if ($selected_property['status'] == 'Damaged' || $selected_property['status'] != 'On Stock') {
+                if ($selected_property['status'] == 'Damaged') {
                     throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is a damaged property.", 500);
+                }
+                if ($selected_property['status'] != 'On Stock') {
+                    throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is not available.", 500);
                 }
 
                 $data = [
@@ -228,9 +250,11 @@ class PropertyController
     // Lend Property
     public function lendProperty(Request $request)
     {
+        if (count($request->selected) <= 0) {
+            throw new Exception('No Selected Property.');
+        }
         try {
             DB::beginTransaction();
-
             $count = 0;
             foreach ($request->selected as $selected_property) {
 
@@ -256,6 +280,8 @@ class PropertyController
                     [
                         'property_id' => $selected_property['id'],
                         'property_code' => $selected_property['property_code'],
+                        'description' => $selected_property['description'],
+                        'unit_cost' => $selected_property['unit_cost'],
                         'category' => $selected_property['category'],
                         'date_of_lending' => $request->data['date_of_lending'],
                         'return_date' => $request->data['return_date'],
@@ -274,50 +300,123 @@ class PropertyController
             DB::commit();
             return response($count . ' property has been transfered successfully.')->setStatusCode(201);
         } catch (\Throwable $th) {
-            throw $th;
             DB::rollBack();
+            throw $th;
             return response(null, Response::HTTP_NOT_IMPLEMENTED);
         }
     }
 
-    public function lendApproved(Request $request, LendProperty $lend_property)
+    public function lendApproved(Request $request)
     {
-        $lend_property->is_lend = true;
-        $lend_property->save();
+        if (count($request->selected) <= 0) {
+            throw new Exception('No Selected Property.');
+        }
+        try {
+            DB::beginTransaction();
 
-        $property = Property::whereId($lend_property->property_id)->first();
+            $generate_mr = GenerateMR::create([
+                'type' => 'lend',
+                'selected' => $request->selected,
+            ]);
 
-        $property->status = 'In Custody';
-        $property->pending_lend = false;
-        $property->location = $lend_property->location;
-        $property->save();
+            info('Generate MR with ID ' . $generate_mr->id);
 
-        $delete_pending = LendProperty::where('property_id', $lend_property->property_id)->where('is_lend', false)->delete();
+            if (!$generate_mr) {
+                throw new Exception('Failed to generate MR.');
+            }
 
-        return (new PropertyResource($property))->response()->setStatusCode(201);
+            $count = 0;
+            foreach ($request->selected as $property) {
+                if ($property['is_lend']) {
+                    throw new Exception("Property with Property Code " . $property['property_code'] . " is already lend.");
+                }
+                $lend_property = LendProperty::whereId($property['id'])->first();
+                $lend_property->is_lend = true;
+                $lend_property->save();
+
+                $property_db = Property::whereId($lend_property->property_id)->first();
+
+                $property_db->status = 'In Custody';
+                $property_db->pending_lend = false;
+                $property_db->location = $lend_property->location;
+                $property_db->save();
+
+                $delete_pending = LendProperty::where('property_id', $lend_property->property_id)->where('is_lend', false)->delete();
+                $count++;
+            }
+
+            DB::commit();
+            return response($count . ' property has been approved successfully.')->setStatusCode(200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
     }
 
-    public function returnProperty(Request $request, LendProperty $lend_property)
+    public function returnProperty(Request $request)
     {
-        $lend_property->returned_date = now('Asia/Manila');
-        $lend_property->save();
+        if (count($request->selected) <= 0) {
+            throw new Exception('No Selected Property.');
+        }
+        try {
+            DB::beginTransaction();
+            $count = 0;
+            foreach ($request->selected as $property) {
+                if (!$property['is_lend']) {
+                    throw new Exception("Property with Property Code " . $property['property_code'] . " is not yet approved.");
+                }
 
-        $property = Property::whereId($lend_property->property_id)->first();
+                if ($property['returned_date']) {
+                    throw new Exception("Property with Property Code " . $property['property_code'] . " is already returned.");
+                }
+                $lend_property = LendProperty::whereId($property['id'])->first();
+                $lend_property->returned_date = now('Asia/Manila');
+                $lend_property->save();
 
-        $property->status = 'On Stock';
-        $property->save();
+                $property_db = Property::whereId($lend_property->property_id)->first();
 
-        return (new PropertyResource($property))->response()->setStatusCode(201);
+                $property_db->status = 'On Stock';
+                $property_db->save();
+                $count++;
+            }
+
+            DB::commit();
+            return response($count . ' property has been returned successfully.')->setStatusCode(200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
     }
 
-    public function cancelLend(Request $request, LendProperty $lend_property)
+    public function cancelLend(Request $request)
     {
-        $property = Property::whereId($lend_property->property_id)->first();
-        $property->pending_lend = false;
-        $property->save();
+        if (count($request->selected) <= 0) {
+            throw new Exception('No Selected Property.');
+        }
+        try {
+            DB::beginTransaction();
+            $count = 0;
 
-        $lend_property->delete();
-        return true;
+            foreach ($request->selected as $property) {
+                if ($property['is_lend']) {
+                    throw new Exception("Property with Property Code " . $property['property_code'] . " is already lend and cannot be cancelled.");
+                }
+                $lend_property = LendProperty::whereId($property['id'])->first();
+                $property_db = Property::whereId($lend_property->property_id)->first();
+                $property_db->pending_lend = false;
+                $property_db->save();
+
+                $lend_property->delete();
+            }
+            DB::commit();
+            return response($count . ' property has been cancelled successfully.')->setStatusCode(200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+            return response(null, Response::HTTP_NOT_IMPLEMENTED);
+        }
     }
 
     public function lendList()
@@ -434,5 +533,18 @@ class PropertyController
         info('Changing Property Maintenance Status for ' . $maintenance->property_code . ' to ' . $status . '');
         $maintenance->has_been_fixed = $request->has_been_fixed;
         $maintenance->save();
+    }
+
+    public function resignOwner(Request $request, Property $property)
+    {
+        $property->init_transfer = false;
+        $property->assigned_to = null;
+        $property->location = null;
+        $property->status = 'On Stock';
+        $property->save();
+
+        $property_history_table = PropertyHistory::wherePropertyId($property->id)->latest()->first();
+        $property_history_table->status = 'Out of Custody';
+        $property_history_table->save();
     }
 }

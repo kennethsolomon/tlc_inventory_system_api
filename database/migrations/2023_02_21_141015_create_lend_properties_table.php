@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->string('property_code');
             $table->string('category');
+            $table->integer('unit_cost');
+            $table->string('description');
             $table->string('date_of_lending');
             $table->string('return_date');
             $table->string('borrower_name');

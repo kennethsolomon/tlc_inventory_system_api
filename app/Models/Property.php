@@ -15,6 +15,7 @@ class Property extends Model
         'purchase_date',
         // 'warranty_period',
         'brand',
+        'unit_cost',
         'model',
         'category',
         'description',

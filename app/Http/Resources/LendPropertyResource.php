@@ -19,6 +19,8 @@ class LendPropertyResource extends JsonResource
             'property_id' => $this->property_id,
             'property_code' => $this->property_code,
             'category' => $this->category,
+            'description' => $this->description,
+            'unit_cost' => $this->unit_cost,
             'date_of_lending' => $this->date_of_lending,
             'borrower_id' => $this->borrower_id,
             'borrower_name' => $this->borrower_name,
