@@ -182,20 +182,16 @@ class PropertyController
         try {
             DB::beginTransaction();
 
-            $generate_mr = GenerateMR::create([
-                'type' => 'transfer',
-                'selected' => json_encode($request->selected),
-            ]);
 
-            info('Generate MR with ID ' . $generate_mr->id);
-
-            if (!$generate_mr) {
-                throw new Exception('Failed to generate MR.');
-            }
+            $selected_mr = [];
 
             $count = 0;
             foreach ($request->selected as $selected_property) {
                 info(__METHOD__ . ' : ' . $selected_property['id']);
+
+                $selected_property['assigned_to'] = $request->data['assigned_to'];
+
+                array_push($selected_mr, $selected_property);
 
                 if ($selected_property['status'] == 'Damaged') {
                     throw new Exception("Property with Property Code " . $selected_property['property_code'] . " is a damaged property.", 500);
@@ -232,7 +228,19 @@ class PropertyController
                     'location' => $request->data['location'],
                     'status' => 'In Custody'
                 ]);
+
                 $count++;
+            }
+
+            $generate_mr = GenerateMR::create([
+                'type' => 'transfer',
+                'selected' => json_encode($selected_mr),
+            ]);
+
+            info('Generate MR with ID ' . $generate_mr->id);
+
+            if (!$generate_mr) {
+                throw new Exception('Failed to generate MR.');
             }
 
             DB::commit();
