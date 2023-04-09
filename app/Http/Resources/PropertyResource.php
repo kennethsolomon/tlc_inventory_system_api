@@ -34,6 +34,7 @@ class PropertyResource extends JsonResource
             'pending_lend' => $this->pending_lend,
             'init_transfer' => $this->init_transfer,
             'property_histories' => PropertyHistoryResource::collection($this->whenLoaded('propertyHistories')), // when has eager loading you can use this code to load the relationship
+            'maintenances' => MaintenanceResource::collection($this->whenLoaded('maintenances')), // when has eager loading you can use this code to load the relationship
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,

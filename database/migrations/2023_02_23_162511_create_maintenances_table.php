@@ -23,7 +23,6 @@ return new class extends Migration
             // $table->string('warranty_period');
             $table->string('assigned_to')->nullable();
             $table->string('location')->nullable();
-            $table->string('notes')->nullable();
             $table->string('custodian')->nullable();
             $table->string('has_been_disposed')->nullable();
             $table->string('has_been_fixed')->default(false)->nullable();
@@ -33,6 +32,9 @@ return new class extends Migration
             $table->string('end_date')->nullable();
             $table->string('frequency')->nullable();
             $table->string('description')->nullable();
+            $table->string('notes')->nullable();
+            $table->string('part')->nullable();
+            $table->string('schedule_date')->nullable();
             $table->timestamps();
         });
     }

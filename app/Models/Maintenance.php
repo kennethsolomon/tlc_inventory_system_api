@@ -27,6 +27,8 @@ class Maintenance extends Model
         'end_date',
         'frequency',
         'description',
+        'part',
+        'schedule_date',
     ];
     protected $appends = ['flagged_date'];
 

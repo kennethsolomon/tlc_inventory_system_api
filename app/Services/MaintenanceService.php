@@ -24,6 +24,14 @@ class MaintenanceService
 		$date = new DateTime($start_date);
 
 		switch ($frequency) {
+			case 'Weekly':
+				$interval = new DateInterval('P1W');
+				break;
+
+			case 'Monthly':
+				$interval = new DateInterval('P1M');
+				break;
+
 			case 'Quarterly':
 				$interval = new DateInterval('P3M');
 				break;

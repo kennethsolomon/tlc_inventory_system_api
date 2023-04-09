@@ -35,7 +35,7 @@ class MaintenanceFrequency extends Command
         $maintenances = Maintenance::get();
 
         foreach ($maintenances as $maintenance) {
-            if ($MaintenanceService->canRun($maintenance->start_date, 30)) {
+            if ($MaintenanceService->canRun($maintenance->start_date, 5)) {
                 info('Creating new Maintenance');
                 $start_date = $MaintenanceService->getFrequencyDate($maintenance->start_date, $maintenance->frequency);
 
