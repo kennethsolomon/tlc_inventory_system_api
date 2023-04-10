@@ -15,9 +15,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')->everyMinute();
-        $schedule->command('property:overdue')->dailyAt('01:30');
-        $schedule->command('maintenance:frequency')->dailyAt('02:00');
+        // $schedule->command('inspire')->everyMinute();
+        // $schedule->command('property:overdue')->dailyAt('01:30');
+        // $schedule->command('maintenance:frequency')->dailyAt('02:00');
+        $schedule->command('property:overdue')->everyMinute();
+        $schedule->command('maintenance:frequency')->everyMinute();
     }
 
     /**
