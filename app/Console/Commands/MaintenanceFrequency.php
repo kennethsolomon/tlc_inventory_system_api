@@ -35,7 +35,8 @@ class MaintenanceFrequency extends Command
         $maintenances = Maintenance::get();
 
         foreach ($maintenances as $maintenance) {
-            if ($MaintenanceService->canRun($maintenance->start_date, 5)) {
+            // if ($MaintenanceService->canRun($maintenance->start_date, 5)) {
+            if (!$maintenance->is_approved) {
                 info('Creating new Maintenance');
                 $start_date = $MaintenanceService->getFrequencyDate($maintenance->start_date, $maintenance->frequency);
 
@@ -43,8 +44,10 @@ class MaintenanceFrequency extends Command
 
                 $new_maintenance->start_date = $start_date;
                 $new_maintenance->end_date = Carbon::parse($start_date)->addDays(7)->format('Y-m-d');
+                $new_maintenance->is_approved = true;
                 $new_maintenance->save();
             }
+            // }
         }
     }
 }
