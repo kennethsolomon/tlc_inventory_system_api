@@ -44,7 +44,7 @@ class MaintenanceFrequency extends Command
 
                 $new_maintenance->start_date = $start_date;
                 $new_maintenance->end_date = Carbon::parse($start_date)->addDays(7)->format('Y-m-d');
-                $new_maintenance->is_approved = true;
+                $maintenance->is_approved = true;
                 $new_maintenance->save();
             }
             // }
