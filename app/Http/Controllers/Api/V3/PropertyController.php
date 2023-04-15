@@ -152,7 +152,7 @@ class PropertyController
                                 'frequency' => 'Biennial',
                             ]);
                             MaintenanceFrequencyJob::dispatch($maintenance_db);
-
+                            break;
                         default:
                             info('Creating a No Repeat maintenance');
                             $maintenance_db = Maintenance::create([

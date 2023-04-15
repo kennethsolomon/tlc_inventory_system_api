@@ -23,7 +23,7 @@ class MaintenanceService
 	public function plotMaintenance($maintenance)
 	{
 		$schedule_date = Carbon::parse($maintenance->schedule_date);
-		while (2024 >= $schedule_date->format('Y')) {
+		while (2030 >= $schedule_date->format('Y')) {
 			info('Creating new Maintenance');
 
 			$start_date = $this->getFrequencyDate($schedule_date, $maintenance->frequency);
