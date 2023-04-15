@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('property:overdue')->dailyAt('01:30');
         // $schedule->command('maintenance:frequency')->dailyAt('02:00');
         $schedule->command('property:overdue')->everyMinute();
-        $schedule->command('maintenance:frequency')->everyMinute();
+        // $schedule->command('maintenance:frequency')->everyMinute();
     }
 
     /**
