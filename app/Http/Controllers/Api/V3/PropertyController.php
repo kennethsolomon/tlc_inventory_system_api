@@ -7,6 +7,7 @@ use App\Http\Resources\LendPropertyResource;
 use App\Http\Resources\MaintenanceResource;
 use App\Http\Resources\PropertyHistoryResource;
 use App\Http\Resources\PropertyResource;
+use App\Jobs\MaintenanceFrequencyJob;
 use App\Models\GenerateMR;
 use App\Models\LendProperty;
 use App\Models\Log;
@@ -30,7 +31,7 @@ class PropertyController
      */
     public function index()
     {
-        return PropertyResource::collection(Property::with(['maintenances' => function($query) {
+        return PropertyResource::collection(Property::with(['maintenances' => function ($query) {
             $query->where('is_approved', false)->get();
         }])->get())->response()->setStatusCode(200);
         // return ['data' => Property::with('maintenances')->get()];
@@ -78,7 +79,7 @@ class PropertyController
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Weekly',
                             ]);
-                            $MaintenanceService->plotMaintenance($maintenance_db);
+                            MaintenanceFrequencyJob::dispatch($maintenance_db);
                             break;
                         case 'Monthly':
                             info('Creating a monthly maintenance');
@@ -96,7 +97,7 @@ class PropertyController
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Monthly',
                             ]);
-                            $MaintenanceService->plotMaintenance($maintenance_db);
+                            MaintenanceFrequencyJob::dispatch($maintenance_db);
                             break;
                         case 'Quarterly':
                             info('Creating a quarterly maintenance');
@@ -114,7 +115,7 @@ class PropertyController
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Quarterly',
                             ]);
-                            $MaintenanceService->plotMaintenance($maintenance_db);
+                            MaintenanceFrequencyJob::dispatch($maintenance_db);
                             break;
                         case 'Yearly':
                             info('Creating a yearly maintenance');
@@ -132,7 +133,7 @@ class PropertyController
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Yearly',
                             ]);
-                            $MaintenanceService->plotMaintenance($maintenance_db);
+                            MaintenanceFrequencyJob::dispatch($maintenance_db);
                             break;
                         case 'Biennial':
                             info('Creating a biennial maintenance');
@@ -150,7 +151,8 @@ class PropertyController
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Biennial',
                             ]);
-                            $MaintenanceService->plotMaintenance($maintenance_db);
+                            MaintenanceFrequencyJob::dispatch($maintenance_db);
+
                         default:
                             info('Creating a No Repeat maintenance');
                             $maintenance_db = Maintenance::create([
@@ -171,7 +173,7 @@ class PropertyController
                 } else {
                     info('Updating a maintenance frequency');
                     $maintenance_db = Maintenance::where('id', $maintenance['id'])->latest()->first();
-                    if($maintenance_db) {
+                    if ($maintenance_db) {
                         $maintenance_db->frequency = $maintenance['frequency'] ?? null;
                         $maintenance_db->part = $maintenance['part'] ?? null;
                         $maintenance_db->notes = $maintenance['maintenance_description'] ?? null;
