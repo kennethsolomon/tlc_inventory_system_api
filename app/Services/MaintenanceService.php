@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Maintenance;
 use Carbon\Carbon;
 use DateInterval;
 use DateTime;
@@ -17,6 +18,28 @@ class MaintenanceService
 		}
 
 		return self::$instance;
+	}
+
+	public function plotMaintenance($maintenance)
+	{
+		$schedule_date = Carbon::parse($maintenance->schedule_date);
+		while (2024 >= $schedule_date->format('Y')) {
+			info('Creating new Maintenance');
+
+			$start_date = $this->getFrequencyDate($schedule_date, $maintenance->frequency);
+
+			$new_maintenance = $maintenance->replicate();
+
+			$new_maintenance->start_date = $start_date;
+			$new_maintenance->is_approved = true;
+			$new_maintenance->end_date = $start_date;
+			$new_maintenance->save();
+
+			$maintenance->is_approved = false;
+			$maintenance->save();
+
+			$schedule_date = Carbon::parse($start_date);
+		}
 	}
 
 	public function getFrequencyDate($start_date, $frequency)
@@ -42,6 +65,10 @@ class MaintenanceService
 
 			case 'Biennial':
 				$interval = new DateInterval('P2Y');
+				break;
+
+			case 'No Repeat':
+				$interval = new DateInterval('P0D');
 				break;
 		}
 

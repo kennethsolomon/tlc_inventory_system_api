@@ -42,7 +42,6 @@ class PropertyController
     public function updateOrCreateProperty(PropertyPostRequest $request)
     {
         try {
-            DB::beginTransaction();
 
             $fields = $request->validated();
 
@@ -57,99 +56,111 @@ class PropertyController
                 info($maintenance);
                 $MaintenanceService = MaintenanceService::getInstance();
                 if (!isset($maintenance['id'])) {
+                    $start_date = $maintenance['schedule_date'];
                     switch ($maintenance['frequency']) {
                         case 'Weekly':
                             info('Creating a weekly maintenance');
-                            $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Weekly');
-                            Maintenance::create([
+                            // $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Weekly');
+                            $maintenance_db = Maintenance::create([
                                 'property_id' => $property->id,
                                 'property_code' => $property->property_code,
                                 'category' => $property->property_code,
                                 'start_date' => $start_date,
-                                'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                // 'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                'end_date' => $start_date,
                                 'description' => $property->description,
                                 'notes' => $maintenance['maintenance_description'],
                                 'part' => $maintenance['part'],
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Weekly',
                             ]);
+                            $MaintenanceService->plotMaintenance($maintenance_db);
                             break;
                         case 'Monthly':
                             info('Creating a monthly maintenance');
-                            $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Monthly');
-                            Maintenance::create([
+                            // $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Monthly');
+                            $maintenance_db = Maintenance::create([
                                 'property_id' => $property->id,
                                 'property_code' => $property->property_code,
                                 'category' => $property->property_code,
                                 'start_date' => $start_date,
-                                'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                // 'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                'end_date' => $start_date,
                                 'description' => $property->description,
                                 'notes' => $maintenance['maintenance_description'],
                                 'part' => $maintenance['part'],
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Monthly',
                             ]);
+                            $MaintenanceService->plotMaintenance($maintenance_db);
                             break;
                         case 'Quarterly':
                             info('Creating a quarterly maintenance');
-                            $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Quarterly');
-                            Maintenance::create([
+                            // $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Quarterly');
+                            $maintenance_db = Maintenance::create([
                                 'property_id' => $property->id,
                                 'property_code' => $property->property_code,
                                 'category' => $property->property_code,
                                 'start_date' => $start_date,
-                                'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                // 'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                'end_date' => $start_date,
                                 'description' => $property->description,
                                 'notes' => $maintenance['maintenance_description'],
                                 'part' => $maintenance['part'],
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Quarterly',
                             ]);
+                            $MaintenanceService->plotMaintenance($maintenance_db);
                             break;
                         case 'Yearly':
                             info('Creating a yearly maintenance');
-                            $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Yearly');
-                            Maintenance::create([
+                            // $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Yearly');
+                            $maintenance_db = Maintenance::create([
                                 'property_id' => $property->id,
                                 'property_code' => $property->property_code,
                                 'category' => $property->property_code,
                                 'start_date' => $start_date,
-                                'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                // 'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                'end_date' => $start_date,
                                 'description' => $property->description,
                                 'notes' => $maintenance['maintenance_description'],
                                 'part' => $maintenance['part'],
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Yearly',
                             ]);
+                            $MaintenanceService->plotMaintenance($maintenance_db);
                             break;
                         case 'Biennial':
                             info('Creating a biennial maintenance');
-                            $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Biennial');
-                            Maintenance::create([
+                            // $start_date = $MaintenanceService->getFrequencyDate($maintenance['schedule_date'], 'Biennial');
+                            $maintenance_db = Maintenance::create([
                                 'property_id' => $property->id,
                                 'property_code' => $property->property_code,
                                 'category' => $property->property_code,
                                 'start_date' => $start_date,
-                                'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                // 'end_date' => Carbon::parse($start_date)->addDays(7)->format('Y-m-d'),
+                                'end_date' => $start_date,
                                 'description' => $property->description,
                                 'notes' => $maintenance['maintenance_description'],
                                 'part' => $maintenance['part'],
                                 'schedule_date' => $maintenance['schedule_date'],
                                 'frequency' => 'Biennial',
                             ]);
+                            $MaintenanceService->plotMaintenance($maintenance_db);
                         default:
                             info('Creating a No Repeat maintenance');
-                            Maintenance::create([
+                            $maintenance_db = Maintenance::create([
                                 'property_id' => $property->id,
                                 'property_code' => $property->property_code,
                                 'category' => $property->property_code,
                                 'start_date' => $maintenance['schedule_date'],
-                                'end_date' => Carbon::parse($maintenance['schedule_date'])->addDays(7)->format('Y-m-d'),
+                                // 'end_date' => Carbon::parse($maintenance['schedule_date'])->addDays(7)->format('Y-m-d'),
+                                'end_date' => $start_date,
                                 'description' => $property->description,
                                 'notes' => $maintenance['maintenance_description'],
                                 'part' => $maintenance['part'],
                                 'schedule_date' => $maintenance['schedule_date'],
-                                'frequency' => 'Biennial',
+                                'frequency' => 'No Repeat',
                             ]);
                             break;
                     }
@@ -164,12 +175,10 @@ class PropertyController
                 }
             }
 
-            DB::commit();
             info('Successfully finished creating a Property with Maintenance Data with Property Code: ' . $property->property_code);
             return (new PropertyResource($property))->response()->setStatusCode(201);
         } catch (\Throwable $th) {
             throw $th;
-            DB::rollBack();
             return response(null, Response::HTTP_NOT_IMPLEMENTED);
         }
     }
