@@ -30,7 +30,11 @@ class PropertyController
      */
     public function index()
     {
-        return PropertyResource::collection(Property::with('maintenances')->get())->response()->setStatusCode(200);
+        return PropertyResource::collection(Property::with(['maintenances' => function($query) {
+            $query->where('is_approved', false)->get();
+        }])->get())->response()->setStatusCode(200);
+        // return ['data' => Property::with('maintenances')->get()];
+        // return Property::with('maintenances')->get();
     }
 
     /**
@@ -167,11 +171,13 @@ class PropertyController
                 } else {
                     info('Updating a maintenance frequency');
                     $maintenance_db = Maintenance::where('id', $maintenance['id'])->latest()->first();
-                    $maintenance_db->frequency = $maintenance['frequency'];
-                    $maintenance_db->part = $maintenance['part'];
-                    $maintenance_db->notes = $maintenance['maintenance_description'];
-                    $maintenance_db->schedule_date = $maintenance['schedule_date'];
-                    $maintenance_db->save();
+                    if($maintenance_db) {
+                        $maintenance_db->frequency = $maintenance['frequency'] ?? null;
+                        $maintenance_db->part = $maintenance['part'] ?? null;
+                        $maintenance_db->notes = $maintenance['maintenance_description'] ?? null;
+                        $maintenance_db->schedule_date = $maintenance['schedule_date'] ?? null;
+                        $maintenance_db->save();
+                    };
                 }
             }
 
