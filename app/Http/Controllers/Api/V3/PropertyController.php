@@ -237,6 +237,10 @@ class PropertyController
                     $data
                 );
                 $count++;
+
+                info('Deleting Maintenance of Property with Property Code: ' . $selected_property['property_code']);
+                Maintenance::where('property_id', $selected_property['id'])->delete();
+
             }
 
             DB::commit();
